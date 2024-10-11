@@ -4,3 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+unsvg = "1.2.1"
+miette = "7.2.0"
+nom = "7.1.3"
