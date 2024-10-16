@@ -69,6 +69,41 @@ pub fn parse_right(input: &str) -> IResult<&str, Command> {
     Ok((remaining, Command::Right(num_pixels)))
 }
 
+pub fn parse_setpencolor(input: &str) -> IResult<&str, Command> {
+    let mut transform = preceded(tag("SETPENCOLOR"), preceded(space1, parse_integer));
+    let (remaining, color) = transform(input)?;
+
+    Ok((remaining, Command::SetPenColor(color as u32)))
+}
+
+pub fn parse_turn(input: &str) -> IResult<&str, Command> {
+    let mut transform = preceded(tag("TURN"), preceded(space1, parse_integer));
+    let (remaining, degrees) = transform(input)?;
+
+    Ok((remaining, Command::Turn(degrees)))
+}
+
+pub fn parse_setheading(input: &str) -> IResult<&str, Command> {
+    let mut transform = preceded(tag("SETHEADING"), preceded(space1, parse_integer));
+    let (remaining, degrees) = transform(input)?;
+
+    Ok((remaining, Command::SetHeading(degrees)))
+}
+
+pub fn parse_setx(input: &str) -> IResult<&str, Command> {
+    let mut transform = preceded(tag("SETX"), preceded(space1, parse_integer));
+    let (remaining, x_value) = transform(input)?;
+
+    Ok((remaining, Command::SetX(x_value)))
+}
+
+pub fn parse_sety(input: &str) -> IResult<&str, Command> {
+    let mut transform = preceded(tag("SETY"), preceded(space1, parse_integer));
+    let (remaining, y_value) = transform(input)?;
+
+    Ok((remaining, Command::SetY(y_value)))
+}
+
 //
 // Unit tests
 //
@@ -136,6 +171,46 @@ mod tests {
         let input = "RIGHT 12";
         let expected = Command::Right(12);
         let result = parse_right(input).unwrap().1;
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_parse_setpencolor() {
+        let input = "SETPENCOLOR 1";
+        let expected = Command::SetPenColor(1);
+        let result = parse_setpencolor(input).unwrap().1;
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_parse_turn() {
+        let input = "TURN 45";
+        let expected = Command::Turn(45);
+        let result = parse_turn(input).unwrap().1;
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_parse_setheading() {
+        let input = "SETHEADING 90";
+        let expected = Command::SetHeading(90);
+        let result = parse_setheading(input).unwrap().1;
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_parse_setx() {
+        let input = "SETX 100";
+        let expected = Command::SetX(100);
+        let result = parse_setx(input).unwrap().1;
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_parse_sety() {
+        let input = "SETY 200";
+        let expected = Command::SetY(200);
+        let result = parse_sety(input).unwrap().1;
         assert_eq!(result, expected);
     }
 }
