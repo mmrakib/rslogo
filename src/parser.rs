@@ -48,11 +48,25 @@ pub fn parse_forward(input: &str) -> IResult<&str, Command> {
     Ok((remaining, Command::Forward(num_pixels)))
 }
 
-pub fn parse_backward(input: &str) -> IResult<&str, Command> {
+pub fn parse_back(input: &str) -> IResult<&str, Command> {
     let mut transform = preceded(tag("BACK"), preceded(space1, parse_integer));
     let (remaining, num_pixels) = transform(input)?;
 
     Ok((remaining, Command::Back(num_pixels)))
+}
+
+pub fn parse_left(input: &str) -> IResult<&str, Command> {
+    let mut transform = preceded(tag("LEFT"), preceded(space1, parse_integer));
+    let (remaining, num_pixels) = transform(input)?;
+
+    Ok((remaining, Command::Left(num_pixels)))
+}
+
+pub fn parse_right(input: &str) -> IResult<&str, Command> {
+    let mut transform = preceded(tag("RIGHT"), preceded(space1, parse_integer));
+    let (remaining, num_pixels) = transform(input)?;
+
+    Ok((remaining, Command::Right(num_pixels)))
 }
 
 //
@@ -105,7 +119,23 @@ mod tests {
     fn test_parse_backward() {
         let input = "BACK 5";
         let expected = Command::Back(5);
-        let result = parse_backward(input).unwrap().1;
+        let result = parse_back(input).unwrap().1;
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_parse_left() {
+        let input = "LEFT 7";
+        let expected = Command::Left(7);
+        let result = parse_left(input).unwrap().1;
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_parse_right() {
+        let input = "RIGHT 12";
+        let expected = Command::Right(12);
+        let result = parse_right(input).unwrap().1;
         assert_eq!(result, expected);
     }
 }
