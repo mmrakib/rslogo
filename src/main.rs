@@ -1,7 +1,4 @@
 mod parser;
-use parser::parse_forward;
-
-mod constants;
 
 mod utils;
 use utils::read_file;
@@ -20,9 +17,4 @@ fn main() {
         Ok(content) => println!("{}", content),
         Err(error) => println!("{}", error),
     }
-
-    let input = "FORWARD 10";
-    let result = parser::parse_forward(input);
-    
-    println!("{:?}", result);
 }
