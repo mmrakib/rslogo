@@ -45,8 +45,8 @@ pub enum Command {
     Make(Identifier, Box<Expression>),
     AddAssign(Identifier, Box<Expression>),
 
-    IfEq(Box<Expression>, Vec<Command>),
-    WhileEq(Box<Expression>, Vec<Command>),
+    If(Box<Expression>, Vec<Command>),
+    While(Box<Expression>, Vec<Command>),
     Repeat(Vec<Command>),
 
     To,

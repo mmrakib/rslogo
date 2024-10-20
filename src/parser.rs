@@ -88,14 +88,13 @@ fn parse_binary_ops(input: &str) -> IResult<&str, Expression> {
 
     let (input, list) = many0(
         tuple((
-            multispace0,
             alt((
-                tag("&&"),
-                tag("||"),
-                tag("!="),
-                tag("=="),
-                tag(">"),
-                tag("<"),
+                tag("AND"),
+                tag("OR"),
+                tag("NE"),
+                tag("EQ"),
+                tag("GT"),
+                tag("LT"),
                 tag("%"),
                 tag("/"),
                 tag("*"),
@@ -104,18 +103,20 @@ fn parse_binary_ops(input: &str) -> IResult<&str, Expression> {
             )),
             multispace0,
             parse_value,
+            multispace1,
+            parse_value,
         ))
     )(input)?;
 
     let expr = list.into_iter().fold(init,
-        |acc, (_, op, _, rhs)| {
+        |acc, (op, _, _, _, rhs)| {
             match op {
-                "&&" => Expression::And(Box::new(acc), Box::new(rhs)),
-                "||" => Expression::Or(Box::new(acc), Box::new(rhs)),
-                "!=" => Expression::NotEquals(Box::new(acc), Box::new(rhs)),
-                "==" => Expression::Equals(Box::new(acc), Box::new(rhs)),
-                ">" => Expression::GreaterThan(Box::new(acc), Box::new(rhs)),
-                "<" => Expression::LessThan(Box::new(acc), Box::new(rhs)),
+                "AND" => Expression::And(Box::new(acc), Box::new(rhs)),
+                "OR" => Expression::Or(Box::new(acc), Box::new(rhs)),
+                "NE" => Expression::NotEquals(Box::new(acc), Box::new(rhs)),
+                "EQ" => Expression::Equals(Box::new(acc), Box::new(rhs)),
+                "GT" => Expression::GreaterThan(Box::new(acc), Box::new(rhs)),
+                "LT" => Expression::LessThan(Box::new(acc), Box::new(rhs)),
                 "%" => Expression::Mod(Box::new(acc), Box::new(rhs)),
                 "/" => Expression::Div(Box::new(acc), Box::new(rhs)),
                 "*" => Expression::Mult(Box::new(acc), Box::new(rhs)),
