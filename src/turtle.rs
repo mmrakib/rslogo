@@ -1,6 +1,5 @@
-use unsvg::{Image, COLORS};
+use unsvg::{Image, COLORS, get_end_coordinates};
 
-#[derive(Debug)]
 pub struct Turtle {
     x: f64,
     y: f64,
@@ -13,8 +12,8 @@ pub struct Turtle {
 impl Turtle {
     pub fn new(width: u32, height: u32) -> Self {
         Turtle {
-            x: 0.0,
-            y: 0.0,
+            x: (width / 2) as f64,
+            y: (height / 2) as f64,
             heading: 0.0,
             pen_down: false,
             pen_color: 15,
@@ -22,68 +21,93 @@ impl Turtle {
         }
     }
 
-    pub fn pen_up(&mut self) {
+    pub fn penup(&mut self) {
         self.pen_down = false;
     }
 
-    pub fn pen_down(&mut self) {
+    pub fn pendown(&mut self) {
         self.pen_down = true;
     }
 
     pub fn set_pen_color(&mut self, color: u32) {
+        if color <= 0 || color >= 15 {
+            panic!("Invalid pen color");
+        }
+
         self.pen_color = color;
     }
 
     fn move_turtle(&mut self, distance: f64) -> Result<(), String> {
-        let radians = self.heading.to_radians();
-        let new_x = self.x + distance * radians.cos();
-        let new_y = self.y - distance * radians.sin(); // The y-axis in SVG is oriented downwards
-
         if self.pen_down {
-            self.image.draw_simple_line(self.x, self.y, new_x, new_y, COLORS[self.pen_color])?;
+            let (new_x, new_y) = self.image.draw_simple_line(self.x as i32, self.y as i32, self.heading as i32, distance as i32, COLORS[self.pen_color as usize])?;
+
+            self.x = new_x as f64;
+            self.y = new_y as f64;
+        } else {
+            let (new_x, new_y) = unsvg::get_end_coordinates(self.x as i32, self.y as i32, self.heading as i32, distance as i32);
+
+            self.x = new_x as f64;
+            self.y = new_y as f64;
         }
 
-        self.x = new_x;
-        self.y = new_y;
+        Ok(())
     }
 
-    pub fn forward(&mut self, distance: f64) {
+    pub fn forward(&mut self, distance: f64) -> Result<(), String> {
         self.move_turtle(distance);
+
+        Ok(())
     }
 
-    pub fn back(&mut self, distance: f64) {
+    pub fn back(&mut self, distance: f64) -> Result<(), String> {
         self.move_turtle(-distance);
+
+        Ok(())
     }
 
-    pub fn left(&mut self, distance: f64) {
-        self.heading = (self.heading - degrees) % 360.0;
+    pub fn left(&mut self, degrees: f64) {
+        self.heading = (self.heading - degrees).rem_euclid(360.0);
     }
 
-    pub fn right(&mut self, distance: f64) {
-        self.heading = (self.heading + degrees) % 360.0;
+    pub fn right(&mut self, degrees: f64) {
+        self.heading = (self.heading + degrees).rem_euclid(360.0);
     }
 
     pub fn set_heading(&mut self, degrees: f64) {
-        self.heading = degrees % 360.0;
+        self.heading = degrees.rem_euclid(360.0);
     }
 
     pub fn set_x(&mut self, x: f64) -> Result<(), String> {
         if self.pen_down {
-            self.image.draw_simple_line(self.x, self.y, x, self.y, COLORS[self.pen_color])?;
+            let distance = (x - self.x).abs();
+            let heading = if x < self.x { 270 } else { 90 }; // Determine the direction based on X movement
+            
+            // Use the current position and the new x for the line
+            self.image.draw_simple_line(self.x as i32, self.y as i32, heading as i32, distance as i32, COLORS[self.pen_color as usize])?;
         }
-
-        self.x = x;
-    }
+    
+        self.x = x; // Update the turtle's X position
+    
+        Ok(())
+    }    
 
     pub fn set_y(&mut self, y: f64) -> Result<(), String> {
         if self.pen_down {
-            self.iamge.draw_simple_line(self.x, self.y, self.x, y, COLORS[self.pen_color])?;
+            let distance = (y - self.y).abs();
+            let heading = if y < self.y { 0 } else { 180 }; // Determine the direction based on Y movement
+            
+            // Use the current position and the new y for the line
+            self.image.draw_simple_line(self.x as i32, self.y as i32, heading as i32, distance as i32, COLORS[self.pen_color as usize])?;
         }
-
-        self.y = y;
-    }
+    
+        self.y = y; // Update the turtle's Y position
+    
+        Ok(())
+    }    
 
     pub fn generate_svg(&self, filename: &str) -> Result<(), String> {
-        image.save_svg(filename)?;
+        self.image.save_svg(filename).map_err(|e| e.to_string())?;
+
+        Ok(())
     }
 }
