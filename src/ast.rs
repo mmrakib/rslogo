@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub struct Identifier(pub String);
+pub struct Identifier(pub String, pub String);
 
 #[derive(Debug)]
 pub enum Expression {
@@ -24,6 +24,7 @@ pub enum Expression {
 
     Variable(String),
     IntegerLiteral(i32),
+    StringLiteral(String),
 }
 
 #[derive(Debug)]
@@ -47,7 +48,7 @@ pub enum Command {
 
     If(Box<Expression>, Vec<Command>),
     While(Box<Expression>, Vec<Command>),
-    Repeat(Vec<Command>),
+    Repeat(Box<Expression>, Vec<Command>),
 
     To,
     End,

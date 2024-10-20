@@ -98,24 +98,12 @@ fn parse_modulo(input: &str) -> IResult<&str, Expression> {
     Ok((input, expr))
 }
 
-/*
-0_00
-0_01
-1_00
-1_01
-1_02
-1_03
-1_04
-1_05
-1_06
-1_07
-1_08
-1_09 (NEED ERROR CHECKING)
-1_10 (NEED ERROR CHECKING)
-1_11 (NEED ADDITIONAL ERROR CHECKING)
-1_12 (NEED ADDITIONAL ERROR CHECKING)
-1_13 (NEED ADDITIONAL ERROR CHECKING)
-2_00
-2_01
 
-*/
+
+
+fn parse_variable_ref(input: &str) -> IResult<&str, Expression> {
+    let (input, _) = tag("\"")(input)?;
+    let (input, name) = alphanumeric1(input)?;
+
+    Ok((input, Expression::Variable(name.to_string())))
+}

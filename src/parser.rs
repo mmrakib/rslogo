@@ -6,10 +6,15 @@ use std::collections::HashMap;
 use crate::ast::{Identifier, Expression, Command};
 
 fn parse_identifier(input: &str) -> IResult<&str, Identifier> {
-    let (input, _) = tag("\"")(input)?;
+    let (input, prefix) = opt(alt( (tag("\""), tag(":") )))(input)?;
     let (input, name) = alphanumeric1(input)?;
 
-    Ok((input, Identifier(name.to_string())))
+    let access_modifier = match prefix {
+        Some(val) => val,
+        None => "",
+    };
+
+    Ok((input, Identifier(name.to_string(), access_modifier.to_string())))
 }
 
 fn parse_integer(input: &str) -> IResult<&str, Expression> {
@@ -22,6 +27,13 @@ fn parse_integer(input: &str) -> IResult<&str, Expression> {
         ))),
         |s: &str| s.parse::<i32>().map(Expression::IntegerLiteral),
     )(input)
+}
+
+fn parse_string(input: &str) -> IResult<&str, Expression> {
+    let (input, _) = tag("\"")(input)?;
+    let (input, content) = alphanumeric1(input)?;
+
+    Ok((input, Expression::StringLiteral(content.to_string())))
 }
 
 fn parse_variable(input: &str) -> IResult<&str, Expression> {
@@ -70,8 +82,9 @@ fn parse_value(input: &str) -> IResult<&str, Expression> {
     alt((
         parse_parentheses,
         parse_queries,
-        parse_variable,
         parse_integer,
+        parse_variable,
+        parse_string,
     ))(input)
 }
 
@@ -101,7 +114,7 @@ fn parse_binary_ops(input: &str) -> IResult<&str, Expression> {
                 tag("-"),
                 tag("+"),
             )),
-            multispace0,
+            multispace1,
             parse_value,
             multispace1,
             parse_value,
@@ -242,6 +255,44 @@ fn parse_addassign(input: &str) -> IResult<&str, Command> {
     Ok((input, Command::AddAssign(variable_name, Box::new(variable_val))))
 }
 
+fn parse_command_block(input: &str) -> IResult<&str, Vec<Command>> {
+    delimited(
+        tag("["),
+        many0(parse_command),
+        tag("]"),
+    )(input)
+}
+
+fn parse_if(input: &str) -> IResult<&str, Command> {
+    let (input, _) = tag_no_case("if")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, condition) = parse_expression(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, block) = parse_command_block(input)?;
+
+    Ok((input, Command::If( Box::new(condition), block )))
+}
+
+fn parse_while(input: &str) -> IResult<&str, Command> {
+    let (input, _) = tag_no_case("while")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, condition) = parse_expression(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, block) = parse_command_block(input)?;
+
+    Ok((input, Command::While( Box::new(condition), block )))
+}
+
+fn parse_repeat(input: &str) -> IResult<&str, Command> {
+    let (input, _) = tag_no_case("repeat")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, condition) = parse_expression(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, block) = parse_command_block(input)?;
+
+    Ok((input, Command::Repeat( Box::new(condition), block )))
+}
+
 fn parse_command(input: &str) -> IResult<&str, Command> {
     let pen_controls_group = alt((
         parse_penup,
@@ -266,6 +317,12 @@ fn parse_command(input: &str) -> IResult<&str, Command> {
     let variables_group = alt((
         parse_make,
         parse_addassign,
+    ));
+
+    let control_structures_group = alt((
+        parse_if,
+        parse_while,
+        parse_repeat,
     ));
 
     alt((
