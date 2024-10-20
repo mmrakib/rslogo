@@ -1,4 +1,7 @@
 #[derive(Debug)]
+pub struct Identifier(pub String);
+
+#[derive(Debug)]
 pub enum Expression {
     Add(Box<Expression>, Box<Expression>),
     Sub(Box<Expression>, Box<Expression>),
@@ -14,6 +17,11 @@ pub enum Expression {
     GreaterThan(Box<Expression>, Box<Expression>),
     LessThan(Box<Expression>, Box<Expression>),
 
+    QueryXCor,
+    QueryYCor,
+    QueryHeading,
+    QueryColor,
+
     Variable(String),
     IntegerLiteral(i32),
 }
@@ -23,28 +31,23 @@ pub enum Command {
     PenUp,
     PenDown,
 
-    Forward(Expression),
-    Back(Expression),
-    Left(Expression),
-    Right(Expression),
-    Turn(Expression),
+    Forward(Box<Expression>),
+    Back(Box<Expression>),
+    Left(Box<Expression>),
+    Right(Box<Expression>),
+    Turn(Box<Expression>),
 
-    SetX(i32),
-    SetY(i32),
-    SetHeading(i32),
-    SetPenColor(i32),
+    SetX(Box<Expression>),
+    SetY(Box<Expression>),
+    SetHeading(Box<Expression>),
+    SetPenColor(Box<Expression>),
 
-    Make(String, Box<Expression>),
-    AddAssign(String, Box<Expression>),
+    Make(Identifier, Box<Expression>),
+    AddAssign(Identifier, Box<Expression>),
 
-    QueryXCor,
-    QueryYCor,
-    Heading,
-    Color,
-
-    IfEq,
-    WhileEq,
-    Repeat,
+    IfEq(Box<Expression>, Vec<Command>),
+    WhileEq(Box<Expression>, Vec<Command>),
+    Repeat(Vec<Command>),
 
     To,
     End,

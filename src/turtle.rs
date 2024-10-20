@@ -12,8 +12,8 @@ pub struct Turtle {
 impl Turtle {
     pub fn new(width: u32, height: u32) -> Self {
         Turtle {
-            x: (width / 2) as f64,
-            y: (height / 2) as f64,
+            x: 0.0,
+            y: 0.0,
             heading: 0.0,
             pen_down: false,
             pen_color: 15,
@@ -30,7 +30,7 @@ impl Turtle {
     }
 
     pub fn set_pen_color(&mut self, color: u32) {
-        if color <= 0 || color >= 15 {
+        if color < 0 || color > 15 {
             panic!("Invalid pen color");
         }
 
