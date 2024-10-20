@@ -24,7 +24,7 @@ fn main() -> Result<(), String> {
             let ast = parse_program(content);
 
             for command in ast {
-                println!("{:?}", command);
+                println!("{:#?}", command);
             }
         },
         Err(error) => println!("{}", error),

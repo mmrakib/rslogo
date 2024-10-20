@@ -23,11 +23,11 @@ pub enum Command {
     PenUp,
     PenDown,
 
-    Forward(i32),
-    Back(i32),
-    Left(i32),
-    Right(i32),
-    Turn(i32),
+    Forward(Expression),
+    Back(Expression),
+    Left(Expression),
+    Right(Expression),
+    Turn(Expression),
 
     SetX(i32),
     SetY(i32),
