@@ -80,13 +80,12 @@ impl Turtle {
     pub fn set_x(&mut self, x: f64) -> Result<(), String> {
         if self.pen_down {
             let distance = (x - self.x).abs();
-            let heading = if x < self.x { 270 } else { 90 }; // Determine the direction based on X movement
+            let heading = if x < self.x { 270 } else { 90 };
             
-            // Use the current position and the new x for the line
             self.image.draw_simple_line(self.x as i32, self.y as i32, heading as i32, distance as i32, COLORS[self.pen_color as usize])?;
         }
     
-        self.x = x; // Update the turtle's X position
+        self.x = x;
     
         Ok(())
     }    
@@ -94,13 +93,12 @@ impl Turtle {
     pub fn set_y(&mut self, y: f64) -> Result<(), String> {
         if self.pen_down {
             let distance = (y - self.y).abs();
-            let heading = if y < self.y { 0 } else { 180 }; // Determine the direction based on Y movement
+            let heading = if y < self.y { 0 } else { 180 };
             
-            // Use the current position and the new y for the line
             self.image.draw_simple_line(self.x as i32, self.y as i32, heading as i32, distance as i32, COLORS[self.pen_color as usize])?;
         }
     
-        self.y = y; // Update the turtle's Y position
+        self.y = y;
     
         Ok(())
     }    
