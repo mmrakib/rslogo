@@ -107,3 +107,24 @@ fn parse_variable_ref(input: &str) -> IResult<&str, Expression> {
 
     Ok((input, Expression::Variable(name.to_string())))
 }
+
+pub fn parse_program(content: String) -> Vec<Command> {
+    let mut ast: Vec<Command> = Vec::new();
+
+    for line in content.lines() {
+        let trimmed = line.trim();
+
+        if trimmed.is_empty() || trimmed.starts_with("//") {
+            continue;
+        }
+
+        match parse_command(trimmed) {
+            Ok((_, command)) => ast.push(command),
+            Err(e) => {
+                panic!("{}", e);
+            }
+        }
+    }
+
+    return ast;
+}
