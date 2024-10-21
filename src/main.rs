@@ -7,7 +7,7 @@ use parser::parse_program;
 mod utils;
 use utils::read_file;
 
-mod ast;
+mod constants;
 
 use std::env;
 
