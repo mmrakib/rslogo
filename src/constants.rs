@@ -1,9 +1,9 @@
 pub type Block = Vec<Statement>;
 
-#[derive(Debug)]
-pub struct Identifier(pub String);
+#[derive(Debug, PartialEq)]
+pub struct Identifier(pub String, pub String);
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Expression {
     /**
      * Arithmetic operators
@@ -44,7 +44,7 @@ pub enum Expression {
     IntegerLiteral(i32),
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Statement {
     /**
      * Pen control
@@ -85,6 +85,13 @@ pub enum Statement {
     /**
      * Procedures
      */
-    To,
-    End,
+    ProcedureDefinition {
+        name: Identifier,
+        parameters: Vec<Expression>,
+        body: Block,
+    },
+    ProcedureCall {
+        name: Identifier,
+        arguments: Vec<Expression>,
+    }
 }

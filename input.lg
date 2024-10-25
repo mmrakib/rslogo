@@ -1,4 +1,12 @@
-MAKE "V1 "17
-ADDASSIGN "V2 ("2 * "17)
-LEFT "5 + (:V1 / XCOR)
-RIGHT ("10 - :V2) / YCOR
+TO Foo :bar "baz
+  PENDOWN
+  FORWARD "10
+  BACK - "10 "5
+  RIGHT "23
+  IF EQ "1 "2 [
+    PENUP
+    FORWARD "25
+  ]
+END
+
+Foo "12 "15 + "13 "13
