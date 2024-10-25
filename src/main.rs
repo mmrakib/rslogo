@@ -8,6 +8,7 @@ mod utils;
 use utils::read_file;
 
 mod constants;
+mod error;
 
 use std::env;
 
@@ -26,7 +27,10 @@ fn main() -> Result<(), String> {
             for command in ast {
                 println!("{:#?}", command);
             }
+
+            error::print_error("unable to parse string", "the parse_string function failed",&["ensure string is in correct format", "ensure string type is &str not String"], true);
         },
+        // Better error handling
         Err(error) => println!("{}", error),
     }
     
