@@ -5,5 +5,5 @@ edition = "2021"
 
 [dependencies]
 unsvg = "1.2.1"
-miette = "7.2.0"
+colored = "2"
 nom = "7.1.3"
