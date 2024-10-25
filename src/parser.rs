@@ -282,9 +282,7 @@ fn parse_or(input: &str) -> IResult<&str, Expression, ParserError> {
 fn parse_expression(input: &str) -> IResult<&str, Expression, ParserError> {
     alt((
         parse_binary_ops,
-        parse_integer,
-        parse_string,
-        parse_variable,
+        parse_value,
     ))(input)
 }
 
