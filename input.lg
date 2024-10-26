@@ -1,4 +1,4 @@
-TO Foo :bar "baz
+TO Baa_ :bar "baz
   PENDOWN
   FORWARD "10
   BACK - "10 "5

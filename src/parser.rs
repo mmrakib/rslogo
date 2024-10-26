@@ -4,20 +4,21 @@
 use nom::{
     branch::alt, 
     bytes::complete::{is_not, tag, tag_no_case, take_while1, take_until},
-    character::complete::{alpha1, alphanumeric1, digit1, line_ending, multispace0, multispace1, not_line_ending, one_of},
-    combinator::{all_consuming, map, map_res, opt, recognize},
+    character::complete::{alpha1, alphanumeric1, digit1, line_ending, multispace0, multispace1, not_line_ending, one_of, char, newline},
+    combinator::{all_consuming, map, map_res, opt, recognize, peek},
     multi::{many0, many1, separated_list0},
     sequence::{delimited, preceded, separated_pair, terminated, tuple},
-    Err,
-    IResult, InputIter,
+    IResult,
 };
 
-use crate::constants::{Block, Identifier, Expression, Statement};
+use crate::{constants::{Block, Expression, Identifier, Statement}, turtle};
+use crate::error::print_error;
+
+use std::any::type_name;
 
 /**
  * Type aliases
  */
-// TODO: Better error handling
 type ParserError<'a> = nom::error::VerboseError<&'a str>;
 
 /**
@@ -28,10 +29,17 @@ pub fn parse_program(content: String) -> Block {
 
     match parse_all(input) {
         Ok((remaining, ast)) => {
+            /*
             if !remaining.trim().is_empty() {
                 // TODO: Better error handling
-                panic!("Unparsed input remaining: {:?}", remaining);
+                print_error(
+                    "unparsed input remaining", 
+                    &format!("Failed to parse the entirety of the input. The following string remains: {:?}", remaining),
+                    &["Check the syntax/format of the input file"],
+                    true,
+                );
             }
+            */
             ast
         },
         Err(error) => {
@@ -63,6 +71,15 @@ fn parse_all(input: &str) -> IResult<&str, Block, ParserError> {
     })
 }
 
+fn parse_arguments(input: &str) -> IResult<&str, Vec<Expression>, ParserError> {
+    many0(
+        preceded(
+            multispace1,
+            parse_expression
+        )
+    )(input)
+}
+
 /**
  * Comments
  */
@@ -78,11 +95,17 @@ fn parse_comment(input: &str) -> IResult<&str, (), ParserError> {
  */
 fn parse_identifier(input: &str) -> IResult<&str, Identifier, ParserError> {
     let (input, prefix) = opt(alt( (tag("\""), tag(":") )))(input)?;
-    let (input, name) = alphanumeric1(input)?;
+    let (input, name) = take_while1(|c: char| c.is_alphanumeric() || c == '_')(input)?;
 
     let access_modifier = match prefix {
         Some(val) => val,
-        None => "",
+        None => {
+            let name_str: &str = &(name.to_lowercase());
+            match name_str {
+                "xcor" | "ycor" | "heading" | "color" => "Q",
+                _ => "",
+            }
+        },
     };
 
     Ok((input, Identifier(name.to_string(), access_modifier.to_string())))
@@ -93,17 +116,25 @@ fn parse_identifier(input: &str) -> IResult<&str, Identifier, ParserError> {
  */
 fn parse_integer(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("\"")(input)?;
+    let (input, sign) = opt(char('-'))(input)?;
     let (input, digits) = digit1(input)?;
 
-    match digits.parse::<i32>() {
+    let number_str = match sign {
+        Some(_) => format!("-{}", digits), // Add the minus sign if present
+        None => digits.to_string(),
+    };
+
+    // Attempt to parse the combined string as an integer
+    match number_str.parse::<i32>() {
         Ok(value) => Ok((input, Expression::IntegerLiteral(value))),
+        // TODO: Better error handling
         Err(_) => panic!("Failed to parse integer"),
     }
 }
 
 fn parse_string(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("\"")(input)?;
-    let (input, content) = alphanumeric1(input)?;
+    let (input, content) = take_while1(|c: char| c.is_alphanumeric() || c == '_')(input)?;
 
     Ok((input, Expression::StringLiteral(content.to_string())))
 }
@@ -287,6 +318,191 @@ fn parse_expression(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 /**
+ * Error handling
+ */
+fn check_type<T>(_: &T) -> &str {
+    type_name::<T>()
+}
+
+fn check_keywords(input: &str) -> IResult<&str, &str, ParserError> {
+    let pen_controls_group = alt((
+        tag_no_case("penup"),
+        tag_no_case("pendown"),
+    ));
+
+    let turtle_movement_group = alt((
+        tag_no_case("forward"),
+        tag_no_case("back"),
+        tag_no_case("left"),
+        tag_no_case("right"),
+        tag_no_case("turn"),
+    ));
+
+    let setters_group = alt((
+        tag_no_case("setx"),
+        tag_no_case("sety"),
+        tag_no_case("setheading"),
+        tag_no_case("setpencolor"),
+    ));
+
+    let variable_assignment_group = alt((
+        tag_no_case("make"),
+        tag_no_case("addassign"),
+    ));
+
+    let control_structures_group = alt((
+        tag_no_case("if"),
+        tag_no_case("while"),
+        tag_no_case("repeat"),
+    ));
+
+    let (input, keyword) = alt((
+        pen_controls_group,
+        turtle_movement_group,
+        setters_group,
+        variable_assignment_group,
+        control_structures_group,
+    ))(input)?;
+
+    Ok((input, keyword))
+}
+
+fn check_error_argument_count(input: &str) -> IResult<&str, (), ParserError> {
+    let (input, (keyword, args)) = peek(tuple((
+        check_keywords,
+        parse_arguments,
+    )))(input)?;
+
+    let keyword_str: &str = &(keyword.to_lowercase());
+    match keyword_str {
+        // Zero arguments
+        "penup" | "pendown" => {
+            if !args.is_empty() {
+                print_error(
+                    "invalid argument count",
+                    &format!("The statement {} does not accept any arguments\n    The arguments given were: {:?}", keyword, args),
+                    &["Ensure no arguments are provided"],
+                    true,
+                );
+            }
+        },
+        "forward" | "back" | "left" | "right" | "turn" | "setx" | "sety" | "setheading" | "setpencolor" => {
+            if args.len() != 1 {
+                print_error(
+                    "invalid argument count",
+                    &format!("The statement {} requires exactly 1 argument\n    The arguments given were: {:?}", keyword, args),
+                    &["Ensure exactly 1 argument is provided"],
+                    true,
+                );
+            }
+        },
+        "make" | "addassign" => {
+            if args.len() != 2 {
+                print_error(
+                    "invalid argument count",
+                    &format!("The statement {} requires exactly 2 arguments\n    The arguments given were: {:?}", keyword, args),
+                    &["Ensure exactly 2 arguments are provided"],
+                    true,
+                );
+            }
+        },
+        _ => (),
+    }
+
+    Ok((input, ()))
+}
+
+fn check_error_argument_type(input: &str) -> IResult<&str, (), ParserError> {
+    let (input, (keyword, args)) = peek(tuple((
+        check_keywords,
+        parse_arguments,
+    )))(input)?;
+
+    let keyword_str: &str = &(keyword.to_lowercase());
+
+    match keyword_str {
+        "forward" | "back" | "left" | "right" | "turn" | "setx" | "sety" | "setheading" | "setpencolor" => {
+            let arg = &args[0];
+
+            let arg_type = check_type(arg);
+
+            match arg_type {
+                "rslogo::constants::Expression" => {
+                    match arg {
+                        Expression::StringLiteral(_) | Expression::QueryHeading | Expression::QueryColor => {
+                            print_error(
+                                "invalid argument type",
+                                &format!("The statement {} requires an integer expression argument\n    The argument given was: {:?}", keyword, arg),
+                                &["Ensure the argument is an integer expression"],
+                                true,
+                            );
+                        },
+                        _ => (),
+                    }
+                },
+                _ => {
+                    print_error(
+                        "invalid argument type",
+                        &format!("The statement {} requires an integer expression argument\n    The argument given was: {:?}", keyword, arg),
+                        &["Ensure the argument is an integer expression"],
+                        true,
+                    );
+                }
+            }
+        },
+        "make" | "addassign" => {
+            let arg1 = &args[0];
+            let arg2 = &args[1];
+
+            let arg1_type = check_type(arg1);
+            let arg2_type = check_type(arg2);
+
+            match arg1_type {
+                "rslogo::constants::Identifier" => (),
+                "rslogo::constants::Expression" => {
+                    match arg1 {
+                        Expression::StringLiteral(_) | Expression::VariableReference(_) | Expression::QueryHeading | Expression::QueryColor => (),
+                        _ => {
+                            print_error(
+                                "invalid argument type",
+                                &format!("The statement {} requires an identifier as the first argument\n    The argument given was: {:?}", keyword, arg1),
+                                &["Ensure the first argument is an identifier"],
+                                true,
+                            );
+                        },
+                    }
+                },
+                _ => {
+                    print_error(
+                        "invalid argument type",
+                        &format!("The statement {} requires an identifier as the first argument\n    The argument given was: {:?}", keyword, arg1),
+                        &["Ensure the first argument is an identifier"],
+                        true,
+                    );
+                }
+            }
+
+            match arg2_type {
+                "rslogo::constants::Expression" => (),
+                _ => {
+                    print_error(
+                        "invalid argument type",
+                        &format!("The statement {} requires an expression as the second argument\n    The argument given was: {:?}", keyword, arg2),
+                        &["Ensure the second argument is an expression"],
+                        true,
+                    );
+                }
+            }
+        },
+        _ => {
+            // Do nothing
+        }
+    }
+
+    Ok((input, ()))
+}
+
+/**
  * Statements
  */
 fn parse_statement(input: &str) -> IResult<&str, Statement, ParserError> {
@@ -325,6 +541,9 @@ fn parse_statement(input: &str) -> IResult<&str, Statement, ParserError> {
         parse_procedure_definition,
         parse_procedure_call,
     ));
+
+    let (_, _) = check_error_argument_count(input)?;
+    let (_, _) = check_error_argument_type(input)?;
 
     terminated(alt((
         pen_controls_group,
@@ -504,15 +723,6 @@ fn parse_repeat(input: &str) -> IResult<&str, Statement, ParserError> {
 /**
  * Procedures
  */
-fn parse_arguments(input: &str) -> IResult<&str, Vec<Expression>, ParserError> {
-    many0(
-        preceded(
-            multispace1,
-            parse_expression
-        )
-    )(input)
-}
-
 fn parse_procedure_definition(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = tag_no_case("to")(input)?;
     let (input, _) = multispace1(input)?;
