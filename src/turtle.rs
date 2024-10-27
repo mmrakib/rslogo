@@ -44,7 +44,7 @@ impl Turtle {
             self.x = new_x as f64;
             self.y = new_y as f64;
         } else {
-            let (new_x, new_y) = unsvg::get_end_coordinates(self.x as i32, self.y as i32, self.heading as i32, distance as i32);
+            let (new_x, new_y) = get_end_coordinates(self.x as i32, self.y as i32, self.heading as i32, distance as i32);
 
             self.x = new_x as f64;
             self.y = new_y as f64;

@@ -320,10 +320,6 @@ fn parse_expression(input: &str) -> IResult<&str, Expression, ParserError> {
 /**
  * Error handling
  */
-fn check_type<T>(_: &T) -> &str {
-    type_name::<T>()
-}
-
 fn check_keywords(input: &str) -> IResult<&str, &str, ParserError> {
     let pen_controls_group = alt((
         tag_no_case("penup"),
@@ -367,10 +363,72 @@ fn check_keywords(input: &str) -> IResult<&str, &str, ParserError> {
     Ok((input, keyword))
 }
 
+fn check_all_errors(input: &str) -> IResult<&str, (), ParserError> {
+    let (_, (keyword, remaining)) = peek(tuple((
+        check_keywords,
+        take_until("\n"),
+    )))(input)?;
+
+    let (_, arguments) = parse_arguments(remaining)?;
+    let args_len = arguments.len();
+
+    let print_error_argument_count = |args_count: i32| -> () {
+        print_error(
+            "incorrect argument count",
+            &format!("{} arguments expected, {} arguments given", args_count, args_len),
+            &[&format!("check the syntax of the {} statement", keyword)],
+            true   
+        );
+    };
+
+    let print_error_argument_type = |expected_type: &str| -> () {
+        print_error(
+            "incorrect argument type",
+            &format!("expected type {}", expected_type),
+            &[&format!("check the argument types of the {} statement", keyword)],
+            true
+        );
+    };
+
+    match keyword.to_lowercase().as_str() {
+        "penup" | "pendown" => {
+            if args_len != 0 {
+                print_error_argument_count(0);
+            }
+        },
+        "forward" | "back" | "left" | "right" | "turn" |
+        "setx" | "sety" | "setheading" | "setpencolor" |
+        "if" | "while" | "repeat" => {
+            if args_len != 1 {
+                print_error_argument_count(1);
+            }
+
+            for arg in arguments {
+                match arg {
+                    Expression::StringLiteral(_) | Expression::QueryHeading | Expression::QueryColor => {
+                        print_error_argument_type( "non-string terminal value");
+                    },
+                    _ => (),
+                }
+            }
+        },
+        "make" | "addassign" => {
+            if args_len != 2 {
+                print_error_argument_count(2);
+            }
+        },
+        _ => (),
+    }
+
+    Ok((input, ()))
+}
+
 /**
  * Statements
  */
 fn parse_statement(input: &str) -> IResult<&str, Statement, ParserError> {
+    check_all_errors(input)?;
+
     let mut pen_controls_group = alt((
         parse_penup,
         parse_pendown,

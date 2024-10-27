@@ -1,12 +1,3 @@
-TO Baa_ :bar "baz
-  PENDOWN
-  FORWARD "10
-  BACK - "10 "5
-  RIGHT "23
-  IF EQ "1 "2 [
-    PENUP
-    FORWARD "25
-  ]
-END
-
-Foo "12 "15 + "13 "13
+IF EQ * "2 "3 "6 "15 [
+    FORWARD "12
+]
