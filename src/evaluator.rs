@@ -1,12 +1,18 @@
-use crate::constants::{Block, Identifier, Expression, Statement};
+use crate::constants::{Block, Expression, Statement};
 use crate::turtle::Turtle;
 use crate::error::print_error;
 
 use std::collections::HashMap;
-use std::ops;
 
 /**
- * Evaluated expression value representation
+ * Represents the value of an evaluated expression
+ * 
+ * Can be any of the terminal values i.e. either a Rust-interpretable integer or string
+ * 
+ * Properties:
+ * value_type: String - The type of the value, either 'integer' or 'string'
+ * integer_value: Option<i32> - The integer value of the expression, if it is an integer
+ * string_value: Option<String> - The string value of the expression, if it is a string
  */
 struct ExpressionValue {
     value_type: String,
@@ -15,7 +21,11 @@ struct ExpressionValue {
 }
 
 /**
- * Program state representation
+ * Represents the state of the program during evaluation
+ * 
+ * Properties:
+ * turtle: Turtle - The turtle object representing the relative cursor position and state
+ * variables: HashMap<String, ExpressionValue> - A hashmap of variable names to their evaluated values
  */
 struct ProgramState {
     turtle: Turtle,
@@ -23,7 +33,13 @@ struct ProgramState {
 }
 
 /**
- * Public interface
+ * Evaluates the contents of the program
+ * 
+ * Reads the AST from start to finish, top to bottom, evaluating each node as a statement (or block of statements) as it goes
+ * 
+ * Arguments:
+ * turtle: Turtle - The turtle object representing the relative cursor position and state
+ * ast: Vec<Statement> - The abstract syntax tree representing the program contents, a seuqence of statements
  */
 pub fn evaluate_program(turtle: Turtle, ast: Vec<Statement>) {
     let mut state = ProgramState {
@@ -31,35 +47,106 @@ pub fn evaluate_program(turtle: Turtle, ast: Vec<Statement>) {
         variables: HashMap::new(),
     };
 
+    evaluate_ast(ast, &mut state);
+
+    state.turtle.generate_svg();
+}
+
+/**
+ * A helper function for evaluating every nested level of the AST
+ */
+fn evaluate_ast(ast: Block, state: &mut ProgramState) {
     for node in ast {
         match node {
-            // Pen control
-            Statement::PenUp => evaluate_penup(&mut state),
-            Statement::PenDown => evaluate_pendown(&mut state),
+            /*
+             * Pen control 
+             */
+            Statement::PenUp => {
+                state.turtle.penup();
+            },
+            Statement::PenDown => {
+                state.turtle.pendown();
+            },
 
+            /*
+             * Movement control
+             */
             Statement::Forward(expr) => {
-                let distance = evaluate_expression(&expr, &mut state);
+                let distance = evaluate_expression(&expr, state);
                 state.turtle.forward(distance.integer_value.unwrap() as f64);
-            }
+            },
+            Statement::Back(expr) => {
+                let distance = evaluate_expression(&expr, state);
+                state.turtle.back(distance.integer_value.unwrap() as f64);
+            },
+            Statement::Left(expr) => {
+                let angle = evaluate_expression(&expr, state);
+                state.turtle.left(angle.integer_value.unwrap() as f64);
+            },
+            Statement::Right(expr) => {
+                let angle = evaluate_expression(&expr, state);
+                state.turtle.right(angle.integer_value.unwrap() as f64);
+            },
+            Statement::Turn(expr) => {
+                let angle = evaluate_expression(&expr, state);
+                state.turtle.right(angle.integer_value.unwrap() as f64);
+            },
 
-            // Turtle movement control
+            /*
+             * Setters
+             */
+            Statement::SetX(expr) => {
+                let x = evaluate_expression(&expr, state);
+                state.turtle.set_x(x.integer_value.unwrap() as f64);
+            },
+            Statement::SetY(expr) => {
+                let y = evaluate_expression(&expr, state);
+                state.turtle.set_y(y.integer_value.unwrap() as f64);
+            },
+            Statement::SetHeading(expr) => {
+                let heading = evaluate_expression(&expr, state);
+                state.turtle.set_heading(heading.integer_value.unwrap() as f64);
+            },
+            Statement::SetPenColor(expr) => {
+                let color = evaluate_expression(&expr, state);
+                state.turtle.set_pen_color(color.integer_value.unwrap() as u32);
+            },
+
+            /*
+             * Variable assignment 
+             */
+            Statement::Make(identifier, expr) => {
+                let value = evaluate_expression(&expr, state);
+                state.variables.insert(identifier.0, value);
+            },
+            Statement::AddAssign(identifier, expr) => {
+                let value = evaluate_expression(&expr, state);
+                let current_value = state.variables.get(&identifier.0).unwrap();
+
+                let new_value = ExpressionValue {
+                    value_type: "integer".to_string(),
+                    integer_value: Some(current_value.integer_value.unwrap() + value.integer_value.unwrap()),
+                    string_value: None,
+                };
+
+                state.variables.insert(identifier.0, new_value);
+            },
+
             // TODO: Implement remaining AST node evaluators
             _ => unimplemented!(),
         }
     }
 }
 
-pub fn test_evaluate_expression(turtle: Turtle, expr: &Expression) {
-    let mut state = ProgramState {
-        turtle: turtle,
-        variables: HashMap::new(),
-    };
-
-    let result = evaluate_expression(expr, &mut state);
-
-    println!("Result: {:?}", result.integer_value.unwrap());
-}
-
+/**
+ * Evaluates the value of an expression
+ * 
+ * Recursively evaluates the expression tree, returning the final value of the expression, allowing for multiple layers of nested expressions
+ * 
+ * Arguments:
+ * expr: &Expression - The expression to evaluate
+ * state: &mut ProgramState - The current state of the program, including the turtle and any variables
+ */
 fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> ExpressionValue {
     let print_error_type_mismatch = |operation: &str| {
         print_error(
@@ -90,7 +177,6 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-
         Expression::StringLiteral(value) => {
             ExpressionValue {
                 value_type: "string".to_string(),
@@ -98,7 +184,6 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: Some(value.clone()),
             }
         },
-
         Expression::VariableReference(value) => {
             ExpressionValue {
                 value_type: "variable".to_string(),
@@ -117,7 +202,6 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-
         Expression::QueryYCor => {
             ExpressionValue {
                 value_type: "integer".to_string(),
@@ -125,7 +209,6 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-
         Expression::QueryHeading => {
             ExpressionValue {
                 value_type: "integer".to_string(),
@@ -133,7 +216,6 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-
         Expression::QueryColor => {
             ExpressionValue {
                 value_type: "integer".to_string(),
@@ -149,7 +231,7 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
             let left = evaluate_expression(lhs, state);
             let right = evaluate_expression(rhs, state);
 
-            if (left.value_type != "integer" || right.value_type != "integer") {
+            if left.value_type != "integer" || right.value_type != "integer" {
                 print_error_type_mismatch("addition");
             }
 
@@ -159,12 +241,11 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-        
         Expression::Subtraction(lhs, rhs) => {
             let left = evaluate_expression(lhs, state);
             let right = evaluate_expression(rhs, state);
 
-            if (left.value_type != "integer" || right.value_type != "integer") {
+            if left.value_type != "integer" || right.value_type != "integer" {
                 print_error_type_mismatch("subtraction");
             }
 
@@ -174,12 +255,11 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-
         Expression::Multiplication(lhs, rhs) => {
             let left = evaluate_expression(lhs, state);
             let right = evaluate_expression(rhs, state);
 
-            if (left.value_type != "integer" || right.value_type != "integer") {
+            if left.value_type != "integer" || right.value_type != "integer" {
                 print_error_type_mismatch("multiplication");
             }
 
@@ -189,16 +269,15 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-
         Expression::Division(lhs, rhs) => {
             let left = evaluate_expression(lhs, state);
             let right = evaluate_expression(rhs, state);
 
-            if (left.value_type != "integer" || right.value_type != "integer") {
+            if left.value_type != "integer" || right.value_type != "integer" {
                 print_error_type_mismatch("division");
             }
 
-            if (right.integer_value.unwrap() == 0) {
+            if right.integer_value.unwrap() == 0 {
                 print_error_division_by_zero("division");
             }
 
@@ -208,16 +287,15 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-
         Expression::Modulo(lhs, rhs) => {
             let left = evaluate_expression(lhs, state);
             let right = evaluate_expression(rhs, state);
 
-            if (left.value_type != "integer" || right.value_type != "integer") {
+            if left.value_type != "integer" || right.value_type != "integer" {
                 print_error_type_mismatch("modulo");
             }
 
-            if (right.integer_value.unwrap() == 0) {
+            if right.integer_value.unwrap() == 0 {
                 print_error_division_by_zero("modulo");
             }
 
@@ -235,7 +313,7 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
             let left = evaluate_expression(lhs, state);
             let right = evaluate_expression(rhs, state);
 
-            if (left.value_type != "integer" || right.value_type != "integer") {
+            if left.value_type != "integer" || right.value_type != "integer" {
                 print_error_type_mismatch("logical and");
             }
 
@@ -251,12 +329,11 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-
         Expression::Or(lhs, rhs) => {
             let left = evaluate_expression(lhs, state);
             let right = evaluate_expression(rhs, state);
 
-            if (left.value_type != "integer" || right.value_type != "integer") {
+            if left.value_type != "integer" || right.value_type != "integer" {
                 print_error_type_mismatch("logical or");
             }
 
@@ -280,7 +357,7 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
             let left = evaluate_expression(lhs, state);
             let right = evaluate_expression(rhs, state);
 
-            if (left.value_type != "integer" || right.value_type != "integer") {
+            if left.value_type != "integer" || right.value_type != "integer" {
                 print_error_type_mismatch("equality");
             }
 
@@ -296,12 +373,11 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-
         Expression::NotEquals(lhs, rhs) => {
             let left = evaluate_expression(lhs, state);
             let right = evaluate_expression(rhs, state);
 
-            if (left.value_type != "integer" || right.value_type != "integer") {
+            if left.value_type != "integer" || right.value_type != "integer" {
                 print_error_type_mismatch("inequality");
             }
 
@@ -317,12 +393,11 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-
         Expression::GreaterThan(lhs, rhs) => {
             let left = evaluate_expression(lhs, state);
             let right = evaluate_expression(rhs, state);
 
-            if (left.value_type != "integer" || right.value_type != "integer") {
+            if left.value_type != "integer" || right.value_type != "integer" {
                 print_error_type_mismatch("greater than");
             }
 
@@ -338,12 +413,11 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
                 string_value: None,
             }
         },
-
         Expression::LessThan(lhs, rhs) => {
             let left = evaluate_expression(lhs, state);
             let right = evaluate_expression(rhs, state);
 
-            if (left.value_type != "integer" || right.value_type != "integer") {
+            if left.value_type != "integer" || right.value_type != "integer" {
                 print_error_type_mismatch("less than");
             }
 
@@ -360,12 +434,4 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
             }
         },
     }
-}
-
-fn evaluate_penup(state: &mut ProgramState) {
-    state.turtle.penup();
-}
-
-fn evaluate_pendown(state: &mut ProgramState) {
-    state.turtle.pendown();
 }

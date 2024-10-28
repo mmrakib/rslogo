@@ -1,3 +1,8 @@
+mod constants;
+
+mod turtle;
+use turtle::Turtle;
+
 mod parser;
 use parser::parse_program;
 
@@ -5,13 +10,7 @@ mod utils;
 use utils::read_file;
 
 mod evaluator;
-use evaluator::{evaluate_program, test_evaluate_expression};
-
-mod turtle;
-use turtle::Turtle;
-
-mod constants;
-use constants::Expression;
+use evaluator::evaluate_program;
 
 mod error;
 
@@ -25,34 +24,13 @@ fn main() -> Result<(), String> {
     let width: u32 = args[3].parse::<u32>().unwrap();
     let height: u32 = args[4].parse::<u32>().unwrap();
 
-    /*
-    match read_file(input_path) {
-        Ok(content) => {
-            let ast = parse_program(content);
+    let content = read_file(input_path);
 
-            for command in ast {
-                println!("{:#?}", command);
-            }
-        },
-        // Better error handling
-        Err(error) => println!("{}", error),
-    }
-    */
+    let turtle= Turtle::new(width, height, output_path.to_string());
 
-    let mut turtle: Turtle = Turtle::new(width, height);
+    let ast = parse_program(content);
 
-    let expression: Expression =
-        Expression::Addition(
-            Box::new(Expression::Subtraction(
-                Box::new(Expression::IntegerLiteral(1)),
-                Box::new(Expression::IntegerLiteral(2))
-            )),
-            Box::new(Expression::IntegerLiteral(2))
-        );
+    evaluate_program(turtle, ast);
 
-    println!("{:#?}", expression);
-
-    test_evaluate_expression(turtle, &expression);
-    
     Ok(())
 }

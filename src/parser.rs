@@ -1,56 +1,62 @@
-/**
- * Imports
+/*
+ * Parser combinator imports from 'nom' crate
  */
 use nom::{
     branch::alt, 
-    bytes::complete::{is_not, tag, tag_no_case, take_while1, take_until},
-    character::complete::{alpha1, alphanumeric1, digit1, line_ending, multispace0, multispace1, not_line_ending, one_of, char, newline},
-    combinator::{all_consuming, map, map_res, opt, recognize, peek},
-    multi::{many0, many1, separated_list0},
-    sequence::{delimited, preceded, separated_pair, terminated, tuple},
+    bytes::complete::{tag, tag_no_case, take_until, take_while1},
+    character::complete::{digit1, char, multispace0, multispace1, line_ending, not_line_ending},
+    combinator::{map, opt, peek},
+    multi::many0,
+    sequence::{tuple, delimited, preceded, terminated},
     IResult,
 };
 
-use crate::{constants::{Block, Expression, Identifier, Statement}, turtle};
+/*
+ * Local imports 
+ */
+use crate::constants::{Block, Expression, Identifier, Statement};
 use crate::error::print_error;
 
-use std::any::type_name;
-
-/**
- * Type aliases
+/*
+ * Type alias for verbose parsing error for more detailed error messages
  */
 type ParserError<'a> = nom::error::VerboseError<&'a str>;
 
 /**
- * Public interface
+ * Parse the contents of the program
+ * 
+ * Reads program from start to finish, generating an AST according to syntax rules
+ * 
+ * Arguments:
+ * content: String - The entirety of the program code contained in a string
+ * 
+ * Returns:
+ * ast: Block - An AST represented by a block of statements (potentially with nested blocks)
  */
 pub fn parse_program(content: String) -> Block {
     let input: &str = &content;
 
     match parse_all(input) {
-        Ok((remaining, ast)) => {
-            /*
-            if !remaining.trim().is_empty() {
-                // TODO: Better error handling
-                print_error(
-                    "unparsed input remaining", 
-                    &format!("Failed to parse the entirety of the input. The following string remains: {:?}", remaining),
-                    &["Check the syntax/format of the input file"],
-                    true,
-                );
-            }
-            */
+        Ok((_, ast)) => {
             ast
         },
         Err(error) => {
-            // TODO: Better error handling
-            panic!("{:?}", error);
+            print_error(
+                "syntax error",
+                &format!("{:?}", error),
+                &["ensure no typos in the program", 
+                        "ensure compliance to precise syntax rules"],
+                true,
+            ); // Exits anyway
+            panic!();
         }        
     }
 }
 
 /**
- * Generic
+ * A helper function for parsing all code while filtering out comments
+ * 
+ * Combines all component parsers into a single parser
  */
 fn parse_all(input: &str) -> IResult<&str, Block, ParserError> {
     many0(
@@ -71,6 +77,28 @@ fn parse_all(input: &str) -> IResult<&str, Block, ParserError> {
     })
 }
 
+/*
+ * Blocks
+ */
+fn parse_block(input: &str) -> IResult<&str, Block, ParserError> {
+    delimited(
+        tag("["),
+        many0(
+            preceded(
+                multispace0,
+                parse_statement
+            )
+        ),
+        preceded(
+            multispace0,
+            tag("]")
+        ),
+    )(input)
+}
+
+/*
+ * Arguments
+ */
 fn parse_arguments(input: &str) -> IResult<&str, Vec<Expression>, ParserError> {
     many0(
         preceded(
@@ -80,7 +108,7 @@ fn parse_arguments(input: &str) -> IResult<&str, Vec<Expression>, ParserError> {
     )(input)
 }
 
-/**
+/*
  * Comments
  */
 fn parse_comment(input: &str) -> IResult<&str, (), ParserError> {
@@ -90,7 +118,7 @@ fn parse_comment(input: &str) -> IResult<&str, (), ParserError> {
     )(input)
 }
 
-/**
+/*
  * Identifiers
  */
 fn parse_identifier(input: &str) -> IResult<&str, Identifier, ParserError> {
@@ -111,8 +139,8 @@ fn parse_identifier(input: &str) -> IResult<&str, Identifier, ParserError> {
     Ok((input, Identifier(name.to_string(), access_modifier.to_string())))
 }
 
-/**
- * Values
+/*
+ * Terminal values
  */
 fn parse_integer(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("\"")(input)?;
@@ -120,15 +148,21 @@ fn parse_integer(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, digits) = digit1(input)?;
 
     let number_str = match sign {
-        Some(_) => format!("-{}", digits), // Add the minus sign if present
+        Some(_) => format!("-{}", digits),
         None => digits.to_string(),
     };
 
-    // Attempt to parse the combined string as an integer
     match number_str.parse::<i32>() {
         Ok(value) => Ok((input, Expression::IntegerLiteral(value))),
-        // TODO: Better error handling
-        Err(_) => panic!("Failed to parse integer"),
+        Err(_) => {
+            print_error(
+                "invalid integer",
+                "integer value is too large or too small",
+                &["ensure the integer value is within the range of a 32-bit signed integer"],
+                true
+            ); // Exits anyway
+            panic!();
+        },
     }
 }
 
@@ -146,7 +180,7 @@ fn parse_variable(input: &str) -> IResult<&str, Expression, ParserError> {
     Ok((input, Expression::VariableReference(name.to_string())))
 }
 
-/**
+/*
  * Queries
  */
 fn parse_xcor(input: &str) -> IResult<&str, Expression, ParserError> {
@@ -182,7 +216,7 @@ fn parse_queries(input: &str) -> IResult<&str, Expression, ParserError> {
     ))(input)
 }
 
-/**
+/*
  * Expressions
  */
 fn parse_value(input: &str) -> IResult<&str, Expression, ParserError> {
@@ -203,7 +237,7 @@ fn parse_parentheses(input: &str) -> IResult<&str, Expression, ParserError> {
     )(input)
 }
 
-/**
+/*
  * Binary operations
  */
 fn parse_binary_ops(input: &str) -> IResult<&str, Expression, ParserError> {
@@ -318,7 +352,255 @@ fn parse_expression(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 /**
- * Error handling
+ * Statements
+ */
+fn parse_statement(input: &str) -> IResult<&str, Statement, ParserError> {
+    check_errors(input)?;
+
+    let pen_controls_group = alt((
+        parse_penup,
+        parse_pendown,
+    ));
+
+    let turtle_movement_group = alt((
+        parse_forward,
+        parse_back,
+        parse_left,
+        parse_right,
+        parse_turn,
+    ));
+
+    let setters_group = alt((
+        parse_setx,
+        parse_sety,
+        parse_setheading,
+        parse_setpencolor,
+    ));
+
+    let variable_assignment_group = alt((
+        parse_make,
+        parse_addassign,
+    ));
+
+    let control_structures_group = alt((
+        parse_if,
+        parse_while,
+        parse_repeat,
+    ));
+
+    let procedure_group = alt((
+        parse_procedure_definition,
+        parse_procedure_call,
+    ));
+
+    terminated(alt((
+        pen_controls_group,
+        turtle_movement_group,
+        setters_group,
+        variable_assignment_group,
+        control_structures_group,
+        procedure_group,
+    )), multispace0)(input)
+}
+
+/*
+ * Pen control
+ */
+fn parse_penup(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("penup")(input)?;
+
+    Ok((input, Statement::PenUp))
+}
+
+fn parse_pendown(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("pendown")(input)?;
+
+    Ok((input, Statement::PenDown))
+}
+
+/*
+ * Movement control
+ */
+fn parse_forward(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("forward")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, pixels) = parse_expression(input)?;
+
+    Ok((input, Statement::Forward( Box::new(pixels) )))
+}
+
+fn parse_back(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("back")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, pixels) = parse_expression(input)?;
+
+    Ok((input, Statement::Back( Box::new(pixels) )))
+}
+
+fn parse_left(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("left")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, degrees) = parse_expression(input)?;
+
+    Ok((input, Statement::Left( Box::new(degrees) )))
+}
+
+fn parse_right(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("right")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, degrees) = parse_expression(input)?;
+
+    Ok((input, Statement::Right( Box::new(degrees) )))
+}
+
+fn parse_turn(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("turn")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, degrees) = parse_expression(input)?;
+
+    Ok((input, Statement::Turn( Box::new(degrees) )))
+}
+
+/*
+ * Setters
+ */
+fn parse_setx(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("setx")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, position) = parse_expression(input)?;
+
+    Ok((input, Statement::SetX( Box::new(position) )))
+}
+
+fn parse_sety(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("sety")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, position) = parse_expression(input)?;
+
+    Ok((input, Statement::SetY( Box::new(position) )))
+}
+
+fn parse_setheading(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("setheading")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, degrees) = parse_expression(input)?;
+
+    Ok((input, Statement::SetHeading( Box::new(degrees) )))
+}
+
+fn parse_setpencolor(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("setpencolor")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, color) = parse_expression(input)?;
+
+    Ok((input, Statement::SetPenColor( Box::new(color) )))
+}
+
+/*
+ * Variable assignment
+ */
+fn parse_make(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("make")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, variable_name) = parse_identifier(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, variable_val) = parse_expression(input)?;
+
+    Ok((input, Statement::Make(variable_name, Box::new(variable_val))))
+}
+
+fn parse_addassign(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("addassign")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, variable_name) = parse_identifier(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, variable_val) = parse_expression(input)?;
+
+    Ok((input, Statement::AddAssign(variable_name, Box::new(variable_val))))
+}
+
+/*
+ * Control structures
+ */
+fn parse_if(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("if")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, condition) = parse_expression(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, block) = parse_block(input)?;
+
+    Ok((input, Statement::If( Box::new(condition), Box::new(block) )))
+}
+
+fn parse_while(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("while")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, condition) = parse_expression(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, block) = parse_block(input)?;
+
+    Ok((input, Statement::While( Box::new(condition), Box::new(block) )))
+}
+
+fn parse_repeat(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("repeat")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, condition) = parse_expression(input)?;
+    let (input, _) = multispace0(input)?;
+    let (input, block) = parse_block(input)?;
+
+    Ok((input, Statement::Repeat( Box::new(condition), Box::new(block) )))
+}
+
+/*
+ * Procedures
+ */
+fn parse_procedure_definition(input: &str) -> IResult<&str, Statement, ParserError> {
+    let (input, _) = tag_no_case("to")(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, identifier) = parse_identifier(input)?;
+
+    let (input, parameters_string) = not_line_ending(input)?;
+    //println!("proc_def parameters_string: {:?}", parameters_string);
+    let (_, parameters) = parse_arguments(parameters_string)?;
+
+    let (input, _) = multispace0(input)?;
+    let (input, body_string) = take_until("END\n")(input)?;
+    //println!("proc_def body_string: {:?}", body_string);
+    let (_, filtered) = parse_all(body_string.trim())?;
+
+    let (input, _) = multispace0(input)?;
+    let (input, _) = tag_no_case("end")(input)?;
+
+    Ok((
+        input,
+        Statement::ProcedureDefinition {
+            name: identifier,
+            parameters: parameters,
+            body: filtered,
+        }
+    ))
+}
+
+fn parse_procedure_call(input: &str) -> IResult<&str, Statement, ParserError> {
+    // Parse the procedure name
+    let (input, identifier) = parse_identifier(input)?;
+
+    let (input, parameters_string) = not_line_ending(input)?;
+    //println!("proc_call parameters_string: {:?}", parameters_string);
+    let (_, parameters) = parse_arguments(parameters_string)?;
+
+    Ok((
+        input,
+        Statement::ProcedureCall {
+            name: identifier,
+            arguments: parameters,
+        }
+    ))
+}
+
+/*
+ * Error handling for statements
  */
 fn check_keywords(input: &str) -> IResult<&str, &str, ParserError> {
     let pen_controls_group = alt((
@@ -363,7 +645,7 @@ fn check_keywords(input: &str) -> IResult<&str, &str, ParserError> {
     Ok((input, keyword))
 }
 
-fn check_all_errors(input: &str) -> IResult<&str, (), ParserError> {
+fn check_errors(input: &str) -> IResult<&str, (), ParserError> {
     let (_, (keyword, remaining)) = peek(tuple((
         check_keywords,
         take_until("\n"),
@@ -423,278 +705,14 @@ fn check_all_errors(input: &str) -> IResult<&str, (), ParserError> {
     Ok((input, ()))
 }
 
-/**
- * Statements
- */
-fn parse_statement(input: &str) -> IResult<&str, Statement, ParserError> {
-    check_all_errors(input)?;
-
-    let mut pen_controls_group = alt((
-        parse_penup,
-        parse_pendown,
-    ));
-
-    let mut turtle_movement_group = alt((
-        parse_forward,
-        parse_back,
-        parse_left,
-        parse_right,
-        parse_turn,
-    ));
-
-    let mut setters_group = alt((
-        parse_setx,
-        parse_sety,
-        parse_setheading,
-        parse_setpencolor,
-    ));
-
-    let mut variable_assignment_group = alt((
-        parse_make,
-        parse_addassign,
-    ));
-
-    let mut control_structures_group = alt((
-        parse_if,
-        parse_while,
-        parse_repeat,
-    ));
-
-    let mut procedure_group = alt((
-        parse_procedure_definition,
-        parse_procedure_call,
-    ));
-
-    terminated(alt((
-        pen_controls_group,
-        turtle_movement_group,
-        setters_group,
-        variable_assignment_group,
-        control_structures_group,
-        procedure_group,
-    )), multispace0)(input)
-}
-
-/**
- * Pen control
- */
-fn parse_penup(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("penup")(input)?;
-
-    Ok((input, Statement::PenUp))
-}
-
-fn parse_pendown(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("pendown")(input)?;
-
-    Ok((input, Statement::PenDown))
-}
-
-/**
- * Turtle movement control
- */
-fn parse_forward(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("forward")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, pixels) = parse_expression(input)?;
-
-    Ok((input, Statement::Forward( Box::new(pixels) )))
-}
-
-fn parse_back(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("back")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, pixels) = parse_expression(input)?;
-
-    Ok((input, Statement::Back( Box::new(pixels) )))
-}
-
-fn parse_left(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("left")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, degrees) = parse_expression(input)?;
-
-    Ok((input, Statement::Left( Box::new(degrees) )))
-}
-
-fn parse_right(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("right")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, degrees) = parse_expression(input)?;
-
-    Ok((input, Statement::Right( Box::new(degrees) )))
-}
-
-fn parse_turn(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("turn")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, degrees) = parse_expression(input)?;
-
-    Ok((input, Statement::Turn( Box::new(degrees) )))
-}
-
-/**
- * Setters
- */
-fn parse_setx(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("setx")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, position) = parse_expression(input)?;
-
-    Ok((input, Statement::SetX( Box::new(position) )))
-}
-
-fn parse_sety(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("sety")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, position) = parse_expression(input)?;
-
-    Ok((input, Statement::SetY( Box::new(position) )))
-}
-
-fn parse_setheading(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("setheading")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, degrees) = parse_expression(input)?;
-
-    Ok((input, Statement::SetHeading( Box::new(degrees) )))
-}
-
-fn parse_setpencolor(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("setpencolor")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, color) = parse_expression(input)?;
-
-    Ok((input, Statement::SetPenColor( Box::new(color) )))
-}
-
-/**
- * Variable assignments
- */
-fn parse_make(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("make")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, variable_name) = parse_identifier(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, variable_val) = parse_expression(input)?;
-
-    Ok((input, Statement::Make(variable_name, Box::new(variable_val))))
-}
-
-fn parse_addassign(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("addassign")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, variable_name) = parse_identifier(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, variable_val) = parse_expression(input)?;
-
-    Ok((input, Statement::AddAssign(variable_name, Box::new(variable_val))))
-}
-
-/**
- * Control structures
- */
-fn parse_block(input: &str) -> IResult<&str, Block, ParserError> {
-    delimited(
-        tag("["),
-        many0(
-            preceded(
-                multispace0,
-                parse_statement
-            )
-        ),
-        preceded(
-            multispace0,
-            tag("]")
-        ),
-    )(input)
-}
-
-fn parse_if(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("if")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, condition) = parse_expression(input)?;
-    let (input, _) = multispace0(input)?;
-    let (input, block) = parse_block(input)?;
-
-    Ok((input, Statement::If( Box::new(condition), Box::new(block) )))
-}
-
-fn parse_while(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("while")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, condition) = parse_expression(input)?;
-    let (input, _) = multispace0(input)?;
-    let (input, block) = parse_block(input)?;
-
-    Ok((input, Statement::While( Box::new(condition), Box::new(block) )))
-}
-
-fn parse_repeat(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("repeat")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, condition) = parse_expression(input)?;
-    let (input, _) = multispace0(input)?;
-    let (input, block) = parse_block(input)?;
-
-    Ok((input, Statement::Repeat( Box::new(condition), Box::new(block) )))
-}
-
-/**
- * Procedures
- */
-fn parse_procedure_definition(input: &str) -> IResult<&str, Statement, ParserError> {
-    let (input, _) = tag_no_case("to")(input)?;
-    let (input, _) = multispace1(input)?;
-    let (input, identifier) = parse_identifier(input)?;
-
-    let (input, parameters_string) = not_line_ending(input)?;
-    //println!("proc_def parameters_string: {:?}", parameters_string);
-    let (_, parameters) = parse_arguments(parameters_string)?;
-
-    let (input, _) = multispace0(input)?;
-    let (input, body_string) = take_until("END\n")(input)?;
-    //println!("proc_def body_string: {:?}", body_string);
-    let (_, filtered) = parse_all(body_string.trim())?;
-
-    let (input, _) = multispace0(input)?;
-    let (input, _) = tag_no_case("end")(input)?;
-
-    Ok((
-        input,
-        Statement::ProcedureDefinition {
-            name: identifier,
-            parameters: parameters,
-            body: filtered,
-        }
-    ))
-}
-
-fn parse_procedure_call(input: &str) -> IResult<&str, Statement, ParserError> {
-    // Parse the procedure name
-    let (input, identifier) = parse_identifier(input)?;
-
-    let (input, parameters_string) = not_line_ending(input)?;
-    //println!("proc_call parameters_string: {:?}", parameters_string);
-    let (_, parameters) = parse_arguments(parameters_string)?;
-
-    Ok((
-        input,
-        Statement::ProcedureCall {
-            name: identifier,
-            arguments: parameters,
-        }
-    ))
-}
-
-/** 
- * Unit Tests
+/*
+ * Unit tests
  */
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    /**
+    /*
      * Comments
      */
     #[test]
@@ -706,7 +724,7 @@ mod tests {
         assert_eq!(result, Ok(("", expected)));
     }
 
-    /**
+    /*
      * Identifiers
      */
     #[test]
@@ -718,7 +736,7 @@ mod tests {
         assert_eq!(result, Ok(("", expected)));
     }
 
-    /**
+    /*
      * Values
      */
     #[test]
@@ -748,7 +766,7 @@ mod tests {
         assert_eq!(result, Ok(("", expected)));
     }
 
-    /**
+    /*
      * Queries
      */
     #[test]
@@ -787,7 +805,7 @@ mod tests {
         assert_eq!(result, Ok(("", expected)));
     }
 
-    /**
+    /*
      * Parentheses
      */
     #[test]
@@ -799,7 +817,7 @@ mod tests {
         assert_eq!(result, Ok(("", expected)));
     }
 
-    /**
+    /*
      * Operations
      */
     #[test]
@@ -934,7 +952,7 @@ mod tests {
         assert_eq!(result, Ok(("", expected)));
     }
 
-    /**
+    /*
      * Pen control
      */
     #[test]
@@ -955,8 +973,8 @@ mod tests {
         assert_eq!(result, Ok(("", expected)));
     }
 
-    /**
-     * Turtle movement control
+    /*
+     * Movement control
      */
     #[test]
     fn test_parse_forward() {
@@ -1003,7 +1021,7 @@ mod tests {
         assert_eq!(result, Ok(("", expected)));
     }
 
-    /**
+    /*
      * Setters
      */
     #[test]
@@ -1042,7 +1060,7 @@ mod tests {
         assert_eq!(result, Ok(("", expected)));
     }
 
-    /**
+    /*
      * Variable assignment
      */
     #[test]
@@ -1063,7 +1081,7 @@ mod tests {
         assert_eq!(result, Ok(("", expected)));
     }
 
-    /**
+    /*
      * Control structures
      */
     #[test]

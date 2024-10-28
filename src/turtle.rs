@@ -1,5 +1,7 @@
 use unsvg::{Image, COLORS, get_end_coordinates};
 
+use crate::error::print_error;
+
 pub struct Turtle {
     x: f64,
     y: f64,
@@ -7,10 +9,11 @@ pub struct Turtle {
     pen_down: bool,
     pen_color: u32,
     image: unsvg::Image,
+    filename: String,
 }
 
 impl Turtle {
-    pub fn new(width: u32, height: u32) -> Self {
+    pub fn new(width: u32, height: u32, filename: String) -> Self {
         Turtle {
             x: 0.0,
             y: 0.0,
@@ -18,6 +21,7 @@ impl Turtle {
             pen_down: false,
             pen_color: 15,
             image: Image::new(width, height),
+            filename: filename,
         }
     }
 
@@ -30,8 +34,13 @@ impl Turtle {
     }
 
     pub fn set_pen_color(&mut self, color: u32) {
-        if color < 0 || color > 15 {
-            panic!("Invalid pen color");
+        if /* color < 0 || */ color > 15 { // Zero limit check unnecessary due to unsigned integer
+            print_error(
+                "invalid color",
+                &format!("color must be between 0 and 15, got {}", color),
+                &["ensure the color value is numeric", "ensure color value is between 0 and 15"],
+                true,
+            );
         }
 
         self.pen_color = color;
@@ -53,16 +62,32 @@ impl Turtle {
         Ok(())
     }
 
-    pub fn forward(&mut self, distance: f64) -> Result<(), String> {
-        self.move_turtle(distance);
-
-        Ok(())
+    pub fn forward(&mut self, distance: f64) {
+        match self.move_turtle(distance) {
+            Ok(_) => (),
+            Err(e) => {
+                print_error(
+                    "failed to draw line",
+                    &e,
+                    &["ensure the distance value is numeric", "ensure the distance value is positive"],
+                    true,
+                );
+            }
+        }
     }
 
-    pub fn back(&mut self, distance: f64) -> Result<(), String> {
-        self.move_turtle(-distance);
-
-        Ok(())
+    pub fn back(&mut self, distance: f64) {
+        match self.move_turtle(-distance) {
+            Ok(_) => (),
+            Err(e) => {
+                print_error(
+                    "failed to draw line",
+                    &e,
+                    &["ensure the distance value is numeric", "ensure the distance value is positive"],
+                    true,
+                );
+            }
+        }
     }
 
     pub fn left(&mut self, degrees: f64) {
@@ -77,30 +102,46 @@ impl Turtle {
         self.heading = degrees.rem_euclid(360.0);
     }
 
-    pub fn set_x(&mut self, x: f64) -> Result<(), String> {
+    pub fn set_x(&mut self, x: f64) {
         if self.pen_down {
             let distance = (x - self.x).abs();
             let heading = if x < self.x { 270 } else { 90 };
             
-            self.image.draw_simple_line(self.x as i32, self.y as i32, heading as i32, distance as i32, COLORS[self.pen_color as usize])?;
+            match self.image.draw_simple_line(self.x as i32, self.y as i32, heading as i32, distance as i32, COLORS[self.pen_color as usize]) {
+                Ok(_) => (),
+                Err(e) => {
+                    print_error(
+                        "failed to draw line",
+                        &e,
+                        &["ensure the distance value is numeric", "ensure the distance value is positive"],
+                        true,
+                    );
+                }
+            }
         }
     
         self.x = x;
-    
-        Ok(())
     }    
 
-    pub fn set_y(&mut self, y: f64) -> Result<(), String> {
+    pub fn set_y(&mut self, y: f64) {
         if self.pen_down {
             let distance = (y - self.y).abs();
             let heading = if y < self.y { 0 } else { 180 };
             
-            self.image.draw_simple_line(self.x as i32, self.y as i32, heading as i32, distance as i32, COLORS[self.pen_color as usize])?;
+            match self.image.draw_simple_line(self.x as i32, self.y as i32, heading as i32, distance as i32, COLORS[self.pen_color as usize]) {
+                Ok(_) => (),
+                Err(e) => {
+                    print_error(
+                        "failed to draw line",
+                        &e,
+                        &["ensure the distance value is numeric", "ensure the distance value is positive"],
+                        true,
+                    );
+                }
+            }
         }
     
         self.y = y;
-    
-        Ok(())
     }
 
     pub fn xcor(&self) -> f64 {
@@ -119,9 +160,15 @@ impl Turtle {
         self.pen_color
     }
 
-    pub fn generate_svg(&self, filename: &str) -> Result<(), String> {
-        self.image.save_svg(filename).map_err(|e| e.to_string())?;
-
-        Ok(())
+    pub fn generate_svg(&self) {
+        match self.image.save_svg(self.filename.as_str()).map_err(|e| e.to_string()) {
+            Ok(_) => {},
+            Err(error) => print_error(
+                "failed to generate SVG",
+                &format!("{:?}", error),
+                &["ensure the output path is correct", "ensure the output path is writable"],
+                true,
+            ),
+        }
     }
 }
