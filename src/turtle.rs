@@ -101,7 +101,23 @@ impl Turtle {
         self.y = y;
     
         Ok(())
-    }    
+    }
+
+    pub fn xcor(&self) -> f64 {
+        self.x
+    }
+
+    pub fn ycor(&self) -> f64 {
+        self.y
+    }
+
+    pub fn heading(&self) -> f64 {
+        self.heading
+    }
+
+    pub fn color(&self) -> u32 {
+        self.pen_color
+    }
 
     pub fn generate_svg(&self, filename: &str) -> Result<(), String> {
         self.image.save_svg(filename).map_err(|e| e.to_string())?;

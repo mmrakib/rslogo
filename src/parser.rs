@@ -405,7 +405,7 @@ fn check_all_errors(input: &str) -> IResult<&str, (), ParserError> {
 
             for arg in arguments {
                 match arg {
-                    Expression::StringLiteral(_) | Expression::QueryHeading | Expression::QueryColor => {
+                    Expression::StringLiteral(_) => {
                         print_error_argument_type( "non-string terminal value");
                     },
                     _ => (),
