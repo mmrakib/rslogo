@@ -12,7 +12,7 @@ MAKE "BOXLINE "2
 WHILE LT :BOXLINE "60 [
       TURN "20
 
-      SETPENCOLOR + COLOR "2
+      SETPENCOLOR "2
 
       Box
 

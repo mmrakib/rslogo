@@ -1,6 +1,6 @@
 use crate::constants::{Block, Expression, Statement};
 use crate::turtle::Turtle;
-use crate::error::print_error;
+use crate::error::{print_error, debug};
 
 use std::collections::HashMap;
 
@@ -14,10 +14,12 @@ use std::collections::HashMap;
  * integer_value: Option<i32> - The integer value of the expression, if it is an integer
  * string_value: Option<String> - The string value of the expression, if it is a string
  */
+#[allow(dead_code)]
+#[derive(Debug, PartialEq, Clone)]
 struct ExpressionValue {
     value_type: String,
     integer_value: Option<i32>,
-    string_value: Option<String>,
+    string_value: Option<String>, // This value is never read, but that is by design, as it is only used for storage
 }
 
 /**
@@ -27,9 +29,72 @@ struct ExpressionValue {
  * turtle: Turtle - The turtle object representing the relative cursor position and state
  * variables: HashMap<String, ExpressionValue> - A hashmap of variable names to their evaluated values
  */
+#[derive(Debug)]
 struct ProgramState {
     turtle: Turtle,
-    variables: HashMap<String, ExpressionValue>,
+    stack: Vec<(String, Option<ExpressionValue>)>,
+    procedures: HashMap<String, (Vec<String>, Block)>,
+}
+
+impl ProgramState {
+    pub fn push(&mut self, name: String, value: Option<ExpressionValue>) {
+        self.stack.push((name, value));
+    }
+
+    pub fn pop(&mut self) {
+        self.stack.pop();
+    }
+
+    pub fn set(&mut self, name: String, value: Option<ExpressionValue>) {
+        for (var_name, var_value) in self.stack.iter_mut().rev() {
+            if var_name == &name {
+                *var_value = value;
+                return;
+            }
+        }
+
+        self.stack.push((name, value));
+    }
+
+    pub fn get(&self, name: &String) -> Option<&Option<ExpressionValue>> {
+        for (var_name, value) in self.stack.iter().rev() {
+            if var_name == name {
+                return Some(value);
+            }
+        }
+
+        None
+    }
+
+    pub fn get_error_handled(&self, name: &String) -> ExpressionValue {
+        let value = self.get(name);
+
+            match value {
+                Some(value) => {
+                    match value {
+                        Some(value) => value.clone(),
+                        None => {
+                            print_error(
+                                "variable not initialised",
+                                &format!("variable {} has not been initialised", name),
+                                &["ensure the variable is initialised before use"],
+                                true,
+                            ); // Exits anyway
+                            panic!();
+                        }
+                    }
+                },
+                None => {
+                    print_error(
+                        "variable not found",
+                        &format!("could not find variable with name {}", name),
+                        &["ensure the variable name is correct"],
+                        true,
+                    ); // Exits anyway
+                    panic!();
+                }
+            }
+    }
 }
 
 /**
@@ -44,10 +109,13 @@ struct ProgramState {
 pub fn evaluate_program(turtle: Turtle, ast: Vec<Statement>) {
     let mut state = ProgramState {
         turtle: turtle,
-        variables: HashMap::new(),
+        stack: Vec::new(),
+        procedures: HashMap::new(),
     };
 
-    evaluate_ast(ast, &mut state);
+    debug("Initial state", &format!("{:#?}", state));
+
+    evaluate_ast(&ast, &mut state);
 
     state.turtle.generate_svg();
 }
@@ -55,7 +123,7 @@ pub fn evaluate_program(turtle: Turtle, ast: Vec<Statement>) {
 /**
  * A helper function for evaluating every nested level of the AST
  */
-fn evaluate_ast(ast: Block, state: &mut ProgramState) {
+fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
     for node in ast {
         match node {
             /*
@@ -63,9 +131,15 @@ fn evaluate_ast(ast: Block, state: &mut ProgramState) {
              */
             Statement::PenUp => {
                 state.turtle.penup();
+
+                debug("Statement evaluated", "PENUP");
+                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::PenDown => {
                 state.turtle.pendown();
+
+                debug("Statement evaluated", "PENDOWN");
+                debug("Updated state", &format!("{:#?}", state));
             },
 
             /*
@@ -74,22 +148,37 @@ fn evaluate_ast(ast: Block, state: &mut ProgramState) {
             Statement::Forward(expr) => {
                 let distance = evaluate_expression(&expr, state);
                 state.turtle.forward(distance.integer_value.unwrap() as f64);
+
+                debug("Statement evaluated", &format!("FORWARD {}", distance.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::Back(expr) => {
                 let distance = evaluate_expression(&expr, state);
                 state.turtle.back(distance.integer_value.unwrap() as f64);
+
+                debug("Statement evaluated", &format!("BACK {}", distance.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::Left(expr) => {
                 let angle = evaluate_expression(&expr, state);
                 state.turtle.left(angle.integer_value.unwrap() as f64);
+
+                debug("Statement evaluated", &format!("LEFT {}", angle.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::Right(expr) => {
                 let angle = evaluate_expression(&expr, state);
                 state.turtle.right(angle.integer_value.unwrap() as f64);
+
+                debug("Statement evaluated", &format!("RIGHT {}", angle.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::Turn(expr) => {
                 let angle = evaluate_expression(&expr, state);
                 state.turtle.right(angle.integer_value.unwrap() as f64);
+
+                debug("Statement evaluated", &format!("TURN {}", angle.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
             },
 
             /*
@@ -98,18 +187,30 @@ fn evaluate_ast(ast: Block, state: &mut ProgramState) {
             Statement::SetX(expr) => {
                 let x = evaluate_expression(&expr, state);
                 state.turtle.set_x(x.integer_value.unwrap() as f64);
+
+                debug("Statement evaluated", &format!("SETX {}", x.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::SetY(expr) => {
                 let y = evaluate_expression(&expr, state);
                 state.turtle.set_y(y.integer_value.unwrap() as f64);
+
+                debug("Statement evaluated", &format!("SETY {}", y.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::SetHeading(expr) => {
                 let heading = evaluate_expression(&expr, state);
                 state.turtle.set_heading(heading.integer_value.unwrap() as f64);
+
+                debug("Statement evaluated", &format!("SETHEADING {}", heading.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::SetPenColor(expr) => {
                 let color = evaluate_expression(&expr, state);
-                state.turtle.set_pen_color(color.integer_value.unwrap() as u32);
+                state.turtle.set_pen_color(color.integer_value.unwrap() as i32);
+
+                debug("Statement evaluated", &format!("SETPENCOLOR {}", color.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
             },
 
             /*
@@ -117,11 +218,14 @@ fn evaluate_ast(ast: Block, state: &mut ProgramState) {
              */
             Statement::Make(identifier, expr) => {
                 let value = evaluate_expression(&expr, state);
-                state.variables.insert(identifier.0, value);
+                state.stack.push( (identifier.0.clone(), Some(value.clone())) );
+
+                debug("Statement evaluated", &format!("MAKE {} {}", identifier.0, value.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::AddAssign(identifier, expr) => {
                 let value = evaluate_expression(&expr, state);
-                let current_value = state.variables.get(&identifier.0).unwrap();
+                let current_value = state.get_error_handled(&identifier.0);
 
                 let new_value = ExpressionValue {
                     value_type: "integer".to_string(),
@@ -129,11 +233,127 @@ fn evaluate_ast(ast: Block, state: &mut ProgramState) {
                     string_value: None,
                 };
 
-                state.variables.insert(identifier.0, new_value);
+                state.set(identifier.0.clone(), Some(new_value));
+
+                debug("Statement evaluated", &format!("ADDASSIGN {} {}", identifier.0, value.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
             },
 
-            // TODO: Implement remaining AST node evaluators
-            _ => unimplemented!(),
+            /*
+             * Conditional control
+             */
+            Statement::If(expr, block) => {
+                let condition = evaluate_expression(&expr, state);
+
+                debug("Statement evaluated", &format!("IF {}", condition.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
+
+                if condition.integer_value.unwrap() != 0 {
+                    evaluate_ast(&block, state);
+                }                
+            },
+            Statement::While(expr, block) => {
+                debug("Statement evaluated", "WHILE");
+                debug("Updated state", &format!("{:#?}", state));
+
+                while evaluate_expression(&expr, state).integer_value.unwrap() != 0 {
+                    evaluate_ast(&block, state);
+                }
+            },
+            Statement::Repeat(expr, block) => {
+                let times = evaluate_expression(&expr, state);
+
+                debug("Statement evaluated", &format!("REPEAT {}", times.integer_value.unwrap()));
+                debug("Updated state", &format!("{:#?}", state));
+
+                for _ in 0..times.integer_value.unwrap() {
+                    evaluate_ast(&block, state);
+                }
+            },
+
+            /*
+             * Procedures
+             */
+            Statement::ProcedureDefinition { name, parameters, body } => {
+                let mut parameter_names: Vec<String> = Vec::new();
+
+                for parameter in parameters.iter() {
+                    match parameter {
+                        Expression::StringLiteral(name) => {
+                            parameter_names.push(name.clone());
+                        },
+                        _ => {
+                            print_error(
+                                "invalid parameter",
+                                &format!("expected string literal for parameter name, instead got {:?}", parameter),
+                                &["ensure the parameter is a string literal"],
+                                true,
+                            );
+                        }
+                    }
+                }
+
+                state.procedures.insert(name.0.clone(), (parameter_names.clone(), body.clone()));
+
+                debug("Statement evaluated", &format!("PROCEDURE_DEFINITION {} {:?}", name.0, parameter_names));
+                debug("Updated state", &format!("{:#?}", state));
+            },
+            Statement::ProcedureCall { name, arguments} => {
+                let procedure = match state.procedures.get(&name.0).cloned() {
+                    Some(procedure) => procedure,
+                    None => {
+                        print_error(
+                            "procedure not found",
+                            &format!("could not find procedure with name {}", name.0),
+                            &["ensure the procedure name is correct"],
+                            true,
+                        ); // Exit anyways
+                        panic!();
+                    }
+                };
+
+                debug("Statement evaluated", &format!("PROCEDURE_CALL {} {:?}", name.0, arguments));
+
+                let (parameters, body) = procedure;
+                let parameters_len = parameters.len();
+                let mut parameters_pushed = 0;
+
+                if parameters_len != arguments.len() {
+                    print_error(
+                        "argument count mismatch",
+                        &format!("expected {} arguments, got {} arguments", parameters_len, arguments.len()),
+                        &["ensure the number of arguments matches the procedure definition"],
+                        true,
+                    );
+                }
+
+                debug("Updated state BEFORE adding procedure call variables", &format!("{:#?}", state));
+
+                for (i, arg) in arguments.iter().enumerate() {
+                    let value = evaluate_expression(arg, state);
+
+                    if i >= parameters_len {
+                        print_error(
+                            "too many arguments",
+                            &format!("expected {} arguments, got {} arguments", parameters_len, arguments.len()),
+                            &["ensure the number of arguments matches the procedure definition"],
+                            true,
+                        );
+                    }
+
+                    state.push(parameters[i].clone(), Some(value.clone()));
+                    parameters_pushed += 1;
+                }
+
+                debug("Updated state AFTER adding procedure call variables", &format!("{:#?}", state));
+
+                evaluate_ast(&body, state);
+
+                while parameters_pushed > 0 {
+                    state.pop();
+                    parameters_pushed -= 1;
+                }
+            }
         }
     }
 }
@@ -178,18 +398,22 @@ fn evaluate_expression(expr: &Expression, state: &mut ProgramState) -> Expressio
             }
         },
         Expression::StringLiteral(value) => {
-            ExpressionValue {
-                value_type: "string".to_string(),
-                integer_value: None,
-                string_value: Some(value.clone()),
+            if value.to_lowercase() == "true" || value.to_lowercase() == "false" {
+                ExpressionValue {
+                    value_type: "integer".to_string(),
+                    integer_value: Some(if value.to_lowercase() == "true" { 1 } else { 0 }),
+                    string_value: None,
+                }
+            } else {
+                ExpressionValue {
+                    value_type: "string".to_string(),
+                    integer_value: None,
+                    string_value: Some(value.clone()),
+                }
             }
         },
-        Expression::VariableReference(value) => {
-            ExpressionValue {
-                value_type: "variable".to_string(),
-                integer_value: None,
-                string_value: Some(value.clone()),
-            }
+        Expression::VariableReference(name) => {
+            state.get_error_handled(name)
         },
 
         /*

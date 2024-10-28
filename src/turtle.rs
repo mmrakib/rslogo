@@ -2,21 +2,36 @@ use unsvg::{Image, COLORS, get_end_coordinates};
 
 use crate::error::print_error;
 
+use std::fmt;
+
 pub struct Turtle {
     x: f64,
     y: f64,
     heading: f64,
     pen_down: bool,
-    pen_color: u32,
+    pen_color: i32,
     image: unsvg::Image,
     filename: String,
+}
+
+impl fmt::Debug for Turtle {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Turtle")
+            .field("x", &self.x)
+            .field("y", &self.y)
+            .field("heading", &self.heading)
+            .field("pen_down", &self.pen_down)
+            .field("pen_color", &self.pen_color)
+            .field("filename", &self.filename)
+            .finish()
+    }
 }
 
 impl Turtle {
     pub fn new(width: u32, height: u32, filename: String) -> Self {
         Turtle {
-            x: 0.0,
-            y: 0.0,
+            x: (width / 2) as f64,
+            y: (height / 2) as f64,
             heading: 0.0,
             pen_down: false,
             pen_color: 15,
@@ -33,8 +48,8 @@ impl Turtle {
         self.pen_down = true;
     }
 
-    pub fn set_pen_color(&mut self, color: u32) {
-        if /* color < 0 || */ color > 15 { // Zero limit check unnecessary due to unsigned integer
+    pub fn set_pen_color(&mut self, color: i32) {
+        if color < 0 || color > 15 {
             print_error(
                 "invalid color",
                 &format!("color must be between 0 and 15, got {}", color),
@@ -156,7 +171,7 @@ impl Turtle {
         self.heading
     }
 
-    pub fn color(&self) -> u32 {
+    pub fn color(&self) -> i32 {
         self.pen_color
     }
 

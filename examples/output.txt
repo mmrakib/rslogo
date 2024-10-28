@@ -1,0 +1,1867 @@
+Initial parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_comment: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+check_errors: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_arguments: New parsing input:
+" Box"
+parse_expression: New parsing input:
+"Box"
+parse_binary_ops: New parsing input:
+"Box"
+parse_addition: New parsing input:
+"Box"
+parse_subtraction: New parsing input:
+"Box"
+parse_multiplication: New parsing input:
+"Box"
+parse_division: New parsing input:
+"Box"
+parse_modulo: New parsing input:
+"Box"
+parse_equals: New parsing input:
+"Box"
+parse_not_equals: New parsing input:
+"Box"
+parse_greater_than: New parsing input:
+"Box"
+parse_less_than: New parsing input:
+"Box"
+parse_and: New parsing input:
+"Box"
+parse_or: New parsing input:
+"Box"
+parse_value: New parsing input:
+"Box"
+parse_parentheses: New parsing input:
+"Box"
+parse_queries: New parsing input:
+"Box"
+parse_xcor: New parsing input:
+"Box"
+parse_ycor: New parsing input:
+"Box"
+parse_heading: New parsing input:
+"Box"
+parse_color: New parsing input:
+"Box"
+parse_integer: New parsing input:
+"Box"
+parse_variable: New parsing input:
+"Box"
+parse_string: New parsing input:
+"Box"
+parse_statement: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_penup: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_pendown: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_forward: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_back: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_left: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_right: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_turn: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setx: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_sety: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setheading: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setpencolor: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_make: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addassign: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_if: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_while: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_repeat: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+procedure_definition: New parsing input:
+"TO Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_identifier: New parsing input:
+"Box\n   FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10\nEND\n\nPENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_arguments: New parsing input:
+""
+parse_comment: New parsing input:
+"FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+check_errors: New parsing input:
+"FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_arguments: New parsing input:
+" \"10"
+parse_expression: New parsing input:
+"\"10"
+parse_binary_ops: New parsing input:
+"\"10"
+parse_addition: New parsing input:
+"\"10"
+parse_subtraction: New parsing input:
+"\"10"
+parse_multiplication: New parsing input:
+"\"10"
+parse_division: New parsing input:
+"\"10"
+parse_modulo: New parsing input:
+"\"10"
+parse_equals: New parsing input:
+"\"10"
+parse_not_equals: New parsing input:
+"\"10"
+parse_greater_than: New parsing input:
+"\"10"
+parse_less_than: New parsing input:
+"\"10"
+parse_and: New parsing input:
+"\"10"
+parse_or: New parsing input:
+"\"10"
+parse_value: New parsing input:
+"\"10"
+parse_parentheses: New parsing input:
+"\"10"
+parse_queries: New parsing input:
+"\"10"
+parse_xcor: New parsing input:
+"\"10"
+parse_ycor: New parsing input:
+"\"10"
+parse_heading: New parsing input:
+"\"10"
+parse_color: New parsing input:
+"\"10"
+parse_integer: New parsing input:
+"\"10"
+parse_statement: New parsing input:
+"FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_penup: New parsing input:
+"FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_pendown: New parsing input:
+"FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_forward: New parsing input:
+"FORWARD \"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_expression: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_binary_ops: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_addition: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_subtraction: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_multiplication: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_division: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_modulo: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_equals: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_not_equals: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_greater_than: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_less_than: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_and: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_or: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_value: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_parentheses: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_queries: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_xcor: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_ycor: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_heading: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_color: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_integer: New parsing input:
+"\"10\n   LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_comment: New parsing input:
+"LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+check_errors: New parsing input:
+"LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_arguments: New parsing input:
+" \"10"
+parse_expression: New parsing input:
+"\"10"
+parse_binary_ops: New parsing input:
+"\"10"
+parse_addition: New parsing input:
+"\"10"
+parse_subtraction: New parsing input:
+"\"10"
+parse_multiplication: New parsing input:
+"\"10"
+parse_division: New parsing input:
+"\"10"
+parse_modulo: New parsing input:
+"\"10"
+parse_equals: New parsing input:
+"\"10"
+parse_not_equals: New parsing input:
+"\"10"
+parse_greater_than: New parsing input:
+"\"10"
+parse_less_than: New parsing input:
+"\"10"
+parse_and: New parsing input:
+"\"10"
+parse_or: New parsing input:
+"\"10"
+parse_value: New parsing input:
+"\"10"
+parse_parentheses: New parsing input:
+"\"10"
+parse_queries: New parsing input:
+"\"10"
+parse_xcor: New parsing input:
+"\"10"
+parse_ycor: New parsing input:
+"\"10"
+parse_heading: New parsing input:
+"\"10"
+parse_color: New parsing input:
+"\"10"
+parse_integer: New parsing input:
+"\"10"
+parse_statement: New parsing input:
+"LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_penup: New parsing input:
+"LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_pendown: New parsing input:
+"LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_forward: New parsing input:
+"LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_back: New parsing input:
+"LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_left: New parsing input:
+"LEFT \"10\n   BACK \"10\n   RIGHT \"10"
+parse_expression: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_binary_ops: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_addition: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_subtraction: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_multiplication: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_division: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_modulo: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_equals: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_not_equals: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_greater_than: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_less_than: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_and: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_or: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_value: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_parentheses: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_queries: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_xcor: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_ycor: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_heading: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_color: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_integer: New parsing input:
+"\"10\n   BACK \"10\n   RIGHT \"10"
+parse_comment: New parsing input:
+"BACK \"10\n   RIGHT \"10"
+check_errors: New parsing input:
+"BACK \"10\n   RIGHT \"10"
+parse_arguments: New parsing input:
+" \"10"
+parse_expression: New parsing input:
+"\"10"
+parse_binary_ops: New parsing input:
+"\"10"
+parse_addition: New parsing input:
+"\"10"
+parse_subtraction: New parsing input:
+"\"10"
+parse_multiplication: New parsing input:
+"\"10"
+parse_division: New parsing input:
+"\"10"
+parse_modulo: New parsing input:
+"\"10"
+parse_equals: New parsing input:
+"\"10"
+parse_not_equals: New parsing input:
+"\"10"
+parse_greater_than: New parsing input:
+"\"10"
+parse_less_than: New parsing input:
+"\"10"
+parse_and: New parsing input:
+"\"10"
+parse_or: New parsing input:
+"\"10"
+parse_value: New parsing input:
+"\"10"
+parse_parentheses: New parsing input:
+"\"10"
+parse_queries: New parsing input:
+"\"10"
+parse_xcor: New parsing input:
+"\"10"
+parse_ycor: New parsing input:
+"\"10"
+parse_heading: New parsing input:
+"\"10"
+parse_color: New parsing input:
+"\"10"
+parse_integer: New parsing input:
+"\"10"
+parse_statement: New parsing input:
+"BACK \"10\n   RIGHT \"10"
+parse_penup: New parsing input:
+"BACK \"10\n   RIGHT \"10"
+parse_pendown: New parsing input:
+"BACK \"10\n   RIGHT \"10"
+parse_forward: New parsing input:
+"BACK \"10\n   RIGHT \"10"
+parse_back: New parsing input:
+"BACK \"10\n   RIGHT \"10"
+parse_expression: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_binary_ops: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_addition: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_subtraction: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_multiplication: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_division: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_modulo: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_equals: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_not_equals: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_greater_than: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_less_than: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_and: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_or: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_value: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_parentheses: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_queries: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_xcor: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_ycor: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_heading: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_color: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_integer: New parsing input:
+"\"10\n   RIGHT \"10"
+parse_comment: New parsing input:
+"RIGHT \"10"
+check_errors: New parsing input:
+"RIGHT \"10"
+parse_comment: New parsing input:
+"PENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+check_errors: New parsing input:
+"PENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_arguments: New parsing input:
+""
+parse_statement: New parsing input:
+"PENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_penup: New parsing input:
+"PENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_pendown: New parsing input:
+"PENDOWN\n\nMAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_comment: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+check_errors: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_arguments: New parsing input:
+" \"BOXLINE \"2"
+parse_expression: New parsing input:
+"\"BOXLINE \"2"
+parse_binary_ops: New parsing input:
+"\"BOXLINE \"2"
+parse_addition: New parsing input:
+"\"BOXLINE \"2"
+parse_subtraction: New parsing input:
+"\"BOXLINE \"2"
+parse_multiplication: New parsing input:
+"\"BOXLINE \"2"
+parse_division: New parsing input:
+"\"BOXLINE \"2"
+parse_modulo: New parsing input:
+"\"BOXLINE \"2"
+parse_equals: New parsing input:
+"\"BOXLINE \"2"
+parse_not_equals: New parsing input:
+"\"BOXLINE \"2"
+parse_greater_than: New parsing input:
+"\"BOXLINE \"2"
+parse_less_than: New parsing input:
+"\"BOXLINE \"2"
+parse_and: New parsing input:
+"\"BOXLINE \"2"
+parse_or: New parsing input:
+"\"BOXLINE \"2"
+parse_value: New parsing input:
+"\"BOXLINE \"2"
+parse_parentheses: New parsing input:
+"\"BOXLINE \"2"
+parse_queries: New parsing input:
+"\"BOXLINE \"2"
+parse_xcor: New parsing input:
+"\"BOXLINE \"2"
+parse_ycor: New parsing input:
+"\"BOXLINE \"2"
+parse_heading: New parsing input:
+"\"BOXLINE \"2"
+parse_color: New parsing input:
+"\"BOXLINE \"2"
+parse_integer: New parsing input:
+"\"BOXLINE \"2"
+parse_variable: New parsing input:
+"\"BOXLINE \"2"
+parse_string: New parsing input:
+"\"BOXLINE \"2"
+parse_expression: New parsing input:
+"\"2"
+parse_binary_ops: New parsing input:
+"\"2"
+parse_addition: New parsing input:
+"\"2"
+parse_subtraction: New parsing input:
+"\"2"
+parse_multiplication: New parsing input:
+"\"2"
+parse_division: New parsing input:
+"\"2"
+parse_modulo: New parsing input:
+"\"2"
+parse_equals: New parsing input:
+"\"2"
+parse_not_equals: New parsing input:
+"\"2"
+parse_greater_than: New parsing input:
+"\"2"
+parse_less_than: New parsing input:
+"\"2"
+parse_and: New parsing input:
+"\"2"
+parse_or: New parsing input:
+"\"2"
+parse_value: New parsing input:
+"\"2"
+parse_parentheses: New parsing input:
+"\"2"
+parse_queries: New parsing input:
+"\"2"
+parse_xcor: New parsing input:
+"\"2"
+parse_ycor: New parsing input:
+"\"2"
+parse_heading: New parsing input:
+"\"2"
+parse_color: New parsing input:
+"\"2"
+parse_integer: New parsing input:
+"\"2"
+parse_statement: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_penup: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_pendown: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_forward: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_back: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_left: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_right: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_turn: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setx: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_sety: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setheading: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setpencolor: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_make: New parsing input:
+"MAKE \"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_identifier: New parsing input:
+"\"BOXLINE \"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_subtraction: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_multiplication: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_division: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_modulo: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_equals: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_not_equals: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_greater_than: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_less_than: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_and: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_or: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_value: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_parentheses: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_queries: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_xcor: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_ycor: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_heading: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_color: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_integer: New parsing input:
+"\"2\n\nWHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_comment: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+check_errors: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_arguments: New parsing input:
+" LT :BOXLINE \"60 ["
+parse_expression: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_binary_ops: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_addition: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_subtraction: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_multiplication: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_division: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_modulo: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_equals: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_not_equals: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_greater_than: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_less_than: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_expression: New parsing input:
+":BOXLINE \"60 ["
+parse_binary_ops: New parsing input:
+":BOXLINE \"60 ["
+parse_addition: New parsing input:
+":BOXLINE \"60 ["
+parse_subtraction: New parsing input:
+":BOXLINE \"60 ["
+parse_multiplication: New parsing input:
+":BOXLINE \"60 ["
+parse_division: New parsing input:
+":BOXLINE \"60 ["
+parse_modulo: New parsing input:
+":BOXLINE \"60 ["
+parse_equals: New parsing input:
+":BOXLINE \"60 ["
+parse_not_equals: New parsing input:
+":BOXLINE \"60 ["
+parse_greater_than: New parsing input:
+":BOXLINE \"60 ["
+parse_less_than: New parsing input:
+":BOXLINE \"60 ["
+parse_and: New parsing input:
+":BOXLINE \"60 ["
+parse_or: New parsing input:
+":BOXLINE \"60 ["
+parse_value: New parsing input:
+":BOXLINE \"60 ["
+parse_parentheses: New parsing input:
+":BOXLINE \"60 ["
+parse_queries: New parsing input:
+":BOXLINE \"60 ["
+parse_xcor: New parsing input:
+":BOXLINE \"60 ["
+parse_ycor: New parsing input:
+":BOXLINE \"60 ["
+parse_heading: New parsing input:
+":BOXLINE \"60 ["
+parse_color: New parsing input:
+":BOXLINE \"60 ["
+parse_integer: New parsing input:
+":BOXLINE \"60 ["
+parse_variable: New parsing input:
+":BOXLINE \"60 ["
+parse_expression: New parsing input:
+"\"60 ["
+parse_binary_ops: New parsing input:
+"\"60 ["
+parse_addition: New parsing input:
+"\"60 ["
+parse_subtraction: New parsing input:
+"\"60 ["
+parse_multiplication: New parsing input:
+"\"60 ["
+parse_division: New parsing input:
+"\"60 ["
+parse_modulo: New parsing input:
+"\"60 ["
+parse_equals: New parsing input:
+"\"60 ["
+parse_not_equals: New parsing input:
+"\"60 ["
+parse_greater_than: New parsing input:
+"\"60 ["
+parse_less_than: New parsing input:
+"\"60 ["
+parse_and: New parsing input:
+"\"60 ["
+parse_or: New parsing input:
+"\"60 ["
+parse_value: New parsing input:
+"\"60 ["
+parse_parentheses: New parsing input:
+"\"60 ["
+parse_queries: New parsing input:
+"\"60 ["
+parse_xcor: New parsing input:
+"\"60 ["
+parse_ycor: New parsing input:
+"\"60 ["
+parse_heading: New parsing input:
+"\"60 ["
+parse_color: New parsing input:
+"\"60 ["
+parse_integer: New parsing input:
+"\"60 ["
+parse_expression: New parsing input:
+"["
+parse_binary_ops: New parsing input:
+"["
+parse_addition: New parsing input:
+"["
+parse_subtraction: New parsing input:
+"["
+parse_multiplication: New parsing input:
+"["
+parse_division: New parsing input:
+"["
+parse_modulo: New parsing input:
+"["
+parse_equals: New parsing input:
+"["
+parse_not_equals: New parsing input:
+"["
+parse_greater_than: New parsing input:
+"["
+parse_less_than: New parsing input:
+"["
+parse_and: New parsing input:
+"["
+parse_or: New parsing input:
+"["
+parse_value: New parsing input:
+"["
+parse_parentheses: New parsing input:
+"["
+parse_queries: New parsing input:
+"["
+parse_xcor: New parsing input:
+"["
+parse_ycor: New parsing input:
+"["
+parse_heading: New parsing input:
+"["
+parse_color: New parsing input:
+"["
+parse_integer: New parsing input:
+"["
+parse_variable: New parsing input:
+"["
+parse_string: New parsing input:
+"["
+parse_statement: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_penup: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_pendown: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_forward: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_back: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_left: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_right: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_turn: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setx: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_sety: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setheading: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setpencolor: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_make: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addassign: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_if: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_while: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+"LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+"LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+"LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_subtraction: New parsing input:
+"LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_multiplication: New parsing input:
+"LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_division: New parsing input:
+"LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_modulo: New parsing input:
+"LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_equals: New parsing input:
+"LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_not_equals: New parsing input:
+"LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_greater_than: New parsing input:
+"LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_less_than: New parsing input:
+"LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_subtraction: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_multiplication: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_division: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_modulo: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_equals: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_not_equals: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_greater_than: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_less_than: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_and: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_or: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_value: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_parentheses: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_queries: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_xcor: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_ycor: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_heading: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_color: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_integer: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_variable: New parsing input:
+":BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_subtraction: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_multiplication: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_division: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_modulo: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_equals: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_not_equals: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_greater_than: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_less_than: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_and: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_or: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_value: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_parentheses: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_queries: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_xcor: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_ycor: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_heading: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_color: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_integer: New parsing input:
+"\"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_block: New parsing input:
+"[\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+check_errors: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_arguments: New parsing input:
+" \"20"
+parse_expression: New parsing input:
+"\"20"
+parse_binary_ops: New parsing input:
+"\"20"
+parse_addition: New parsing input:
+"\"20"
+parse_subtraction: New parsing input:
+"\"20"
+parse_multiplication: New parsing input:
+"\"20"
+parse_division: New parsing input:
+"\"20"
+parse_modulo: New parsing input:
+"\"20"
+parse_equals: New parsing input:
+"\"20"
+parse_not_equals: New parsing input:
+"\"20"
+parse_greater_than: New parsing input:
+"\"20"
+parse_less_than: New parsing input:
+"\"20"
+parse_and: New parsing input:
+"\"20"
+parse_or: New parsing input:
+"\"20"
+parse_value: New parsing input:
+"\"20"
+parse_parentheses: New parsing input:
+"\"20"
+parse_queries: New parsing input:
+"\"20"
+parse_xcor: New parsing input:
+"\"20"
+parse_ycor: New parsing input:
+"\"20"
+parse_heading: New parsing input:
+"\"20"
+parse_color: New parsing input:
+"\"20"
+parse_integer: New parsing input:
+"\"20"
+parse_statement: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_penup: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_pendown: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_forward: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_back: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_left: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_right: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_turn: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_subtraction: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_multiplication: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_division: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_modulo: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_equals: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_not_equals: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_greater_than: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_less_than: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_and: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_or: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_value: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_parentheses: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_queries: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_xcor: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_ycor: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_heading: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_color: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_integer: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+check_errors: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_arguments: New parsing input:
+" + COLOR \"2"
+parse_expression: New parsing input:
+"+ COLOR \"2"
+parse_binary_ops: New parsing input:
+"+ COLOR \"2"
+parse_addition: New parsing input:
+"+ COLOR \"2"
+parse_expression: New parsing input:
+"COLOR \"2"
+parse_binary_ops: New parsing input:
+"COLOR \"2"
+parse_addition: New parsing input:
+"COLOR \"2"
+parse_subtraction: New parsing input:
+"COLOR \"2"
+parse_multiplication: New parsing input:
+"COLOR \"2"
+parse_division: New parsing input:
+"COLOR \"2"
+parse_modulo: New parsing input:
+"COLOR \"2"
+parse_equals: New parsing input:
+"COLOR \"2"
+parse_not_equals: New parsing input:
+"COLOR \"2"
+parse_greater_than: New parsing input:
+"COLOR \"2"
+parse_less_than: New parsing input:
+"COLOR \"2"
+parse_and: New parsing input:
+"COLOR \"2"
+parse_or: New parsing input:
+"COLOR \"2"
+parse_value: New parsing input:
+"COLOR \"2"
+parse_parentheses: New parsing input:
+"COLOR \"2"
+parse_queries: New parsing input:
+"COLOR \"2"
+parse_xcor: New parsing input:
+"COLOR \"2"
+parse_ycor: New parsing input:
+"COLOR \"2"
+parse_heading: New parsing input:
+"COLOR \"2"
+parse_color: New parsing input:
+"COLOR \"2"
+parse_expression: New parsing input:
+"\"2"
+parse_binary_ops: New parsing input:
+"\"2"
+parse_addition: New parsing input:
+"\"2"
+parse_subtraction: New parsing input:
+"\"2"
+parse_multiplication: New parsing input:
+"\"2"
+parse_division: New parsing input:
+"\"2"
+parse_modulo: New parsing input:
+"\"2"
+parse_equals: New parsing input:
+"\"2"
+parse_not_equals: New parsing input:
+"\"2"
+parse_greater_than: New parsing input:
+"\"2"
+parse_less_than: New parsing input:
+"\"2"
+parse_and: New parsing input:
+"\"2"
+parse_or: New parsing input:
+"\"2"
+parse_value: New parsing input:
+"\"2"
+parse_parentheses: New parsing input:
+"\"2"
+parse_queries: New parsing input:
+"\"2"
+parse_xcor: New parsing input:
+"\"2"
+parse_ycor: New parsing input:
+"\"2"
+parse_heading: New parsing input:
+"\"2"
+parse_color: New parsing input:
+"\"2"
+parse_integer: New parsing input:
+"\"2"
+parse_statement: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_penup: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_pendown: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_forward: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_back: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_left: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_right: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_turn: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setx: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_sety: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setheading: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setpencolor: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+"+ COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+"+ COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+"+ COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_subtraction: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_multiplication: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_division: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_modulo: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_equals: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_not_equals: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_greater_than: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_less_than: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_and: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_or: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_value: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_parentheses: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_queries: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_xcor: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_ycor: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_heading: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_color: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_subtraction: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_multiplication: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_division: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_modulo: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_equals: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_not_equals: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_greater_than: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_less_than: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_and: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_or: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_value: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_parentheses: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_queries: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_xcor: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_ycor: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_heading: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_color: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_integer: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+check_errors: New parsing input:
+"Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_repeat: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+procedure_definition: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+procedure_call: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_identifier: New parsing input:
+"WHILE LT :BOXLINE \"60 [\n      TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_arguments: New parsing input:
+" LT :BOXLINE \"60 ["
+parse_expression: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_binary_ops: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_addition: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_subtraction: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_multiplication: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_division: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_modulo: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_equals: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_not_equals: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_greater_than: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_less_than: New parsing input:
+"LT :BOXLINE \"60 ["
+parse_expression: New parsing input:
+":BOXLINE \"60 ["
+parse_binary_ops: New parsing input:
+":BOXLINE \"60 ["
+parse_addition: New parsing input:
+":BOXLINE \"60 ["
+parse_subtraction: New parsing input:
+":BOXLINE \"60 ["
+parse_multiplication: New parsing input:
+":BOXLINE \"60 ["
+parse_division: New parsing input:
+":BOXLINE \"60 ["
+parse_modulo: New parsing input:
+":BOXLINE \"60 ["
+parse_equals: New parsing input:
+":BOXLINE \"60 ["
+parse_not_equals: New parsing input:
+":BOXLINE \"60 ["
+parse_greater_than: New parsing input:
+":BOXLINE \"60 ["
+parse_less_than: New parsing input:
+":BOXLINE \"60 ["
+parse_and: New parsing input:
+":BOXLINE \"60 ["
+parse_or: New parsing input:
+":BOXLINE \"60 ["
+parse_value: New parsing input:
+":BOXLINE \"60 ["
+parse_parentheses: New parsing input:
+":BOXLINE \"60 ["
+parse_queries: New parsing input:
+":BOXLINE \"60 ["
+parse_xcor: New parsing input:
+":BOXLINE \"60 ["
+parse_ycor: New parsing input:
+":BOXLINE \"60 ["
+parse_heading: New parsing input:
+":BOXLINE \"60 ["
+parse_color: New parsing input:
+":BOXLINE \"60 ["
+parse_integer: New parsing input:
+":BOXLINE \"60 ["
+parse_variable: New parsing input:
+":BOXLINE \"60 ["
+parse_expression: New parsing input:
+"\"60 ["
+parse_binary_ops: New parsing input:
+"\"60 ["
+parse_addition: New parsing input:
+"\"60 ["
+parse_subtraction: New parsing input:
+"\"60 ["
+parse_multiplication: New parsing input:
+"\"60 ["
+parse_division: New parsing input:
+"\"60 ["
+parse_modulo: New parsing input:
+"\"60 ["
+parse_equals: New parsing input:
+"\"60 ["
+parse_not_equals: New parsing input:
+"\"60 ["
+parse_greater_than: New parsing input:
+"\"60 ["
+parse_less_than: New parsing input:
+"\"60 ["
+parse_and: New parsing input:
+"\"60 ["
+parse_or: New parsing input:
+"\"60 ["
+parse_value: New parsing input:
+"\"60 ["
+parse_parentheses: New parsing input:
+"\"60 ["
+parse_queries: New parsing input:
+"\"60 ["
+parse_xcor: New parsing input:
+"\"60 ["
+parse_ycor: New parsing input:
+"\"60 ["
+parse_heading: New parsing input:
+"\"60 ["
+parse_color: New parsing input:
+"\"60 ["
+parse_integer: New parsing input:
+"\"60 ["
+parse_expression: New parsing input:
+"["
+parse_binary_ops: New parsing input:
+"["
+parse_addition: New parsing input:
+"["
+parse_subtraction: New parsing input:
+"["
+parse_multiplication: New parsing input:
+"["
+parse_division: New parsing input:
+"["
+parse_modulo: New parsing input:
+"["
+parse_equals: New parsing input:
+"["
+parse_not_equals: New parsing input:
+"["
+parse_greater_than: New parsing input:
+"["
+parse_less_than: New parsing input:
+"["
+parse_and: New parsing input:
+"["
+parse_or: New parsing input:
+"["
+parse_value: New parsing input:
+"["
+parse_parentheses: New parsing input:
+"["
+parse_queries: New parsing input:
+"["
+parse_xcor: New parsing input:
+"["
+parse_ycor: New parsing input:
+"["
+parse_heading: New parsing input:
+"["
+parse_color: New parsing input:
+"["
+parse_integer: New parsing input:
+"["
+parse_variable: New parsing input:
+"["
+parse_string: New parsing input:
+"["
+parse_comment: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+check_errors: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_arguments: New parsing input:
+" \"20"
+parse_expression: New parsing input:
+"\"20"
+parse_binary_ops: New parsing input:
+"\"20"
+parse_addition: New parsing input:
+"\"20"
+parse_subtraction: New parsing input:
+"\"20"
+parse_multiplication: New parsing input:
+"\"20"
+parse_division: New parsing input:
+"\"20"
+parse_modulo: New parsing input:
+"\"20"
+parse_equals: New parsing input:
+"\"20"
+parse_not_equals: New parsing input:
+"\"20"
+parse_greater_than: New parsing input:
+"\"20"
+parse_less_than: New parsing input:
+"\"20"
+parse_and: New parsing input:
+"\"20"
+parse_or: New parsing input:
+"\"20"
+parse_value: New parsing input:
+"\"20"
+parse_parentheses: New parsing input:
+"\"20"
+parse_queries: New parsing input:
+"\"20"
+parse_xcor: New parsing input:
+"\"20"
+parse_ycor: New parsing input:
+"\"20"
+parse_heading: New parsing input:
+"\"20"
+parse_color: New parsing input:
+"\"20"
+parse_integer: New parsing input:
+"\"20"
+parse_statement: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_penup: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_pendown: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_forward: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_back: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_left: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_right: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_turn: New parsing input:
+"TURN \"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_subtraction: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_multiplication: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_division: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_modulo: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_equals: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_not_equals: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_greater_than: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_less_than: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_and: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_or: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_value: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_parentheses: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_queries: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_xcor: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_ycor: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_heading: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_color: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_integer: New parsing input:
+"\"20\n\n      SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_comment: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+check_errors: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_arguments: New parsing input:
+" + COLOR \"2"
+parse_expression: New parsing input:
+"+ COLOR \"2"
+parse_binary_ops: New parsing input:
+"+ COLOR \"2"
+parse_addition: New parsing input:
+"+ COLOR \"2"
+parse_expression: New parsing input:
+"COLOR \"2"
+parse_binary_ops: New parsing input:
+"COLOR \"2"
+parse_addition: New parsing input:
+"COLOR \"2"
+parse_subtraction: New parsing input:
+"COLOR \"2"
+parse_multiplication: New parsing input:
+"COLOR \"2"
+parse_division: New parsing input:
+"COLOR \"2"
+parse_modulo: New parsing input:
+"COLOR \"2"
+parse_equals: New parsing input:
+"COLOR \"2"
+parse_not_equals: New parsing input:
+"COLOR \"2"
+parse_greater_than: New parsing input:
+"COLOR \"2"
+parse_less_than: New parsing input:
+"COLOR \"2"
+parse_and: New parsing input:
+"COLOR \"2"
+parse_or: New parsing input:
+"COLOR \"2"
+parse_value: New parsing input:
+"COLOR \"2"
+parse_parentheses: New parsing input:
+"COLOR \"2"
+parse_queries: New parsing input:
+"COLOR \"2"
+parse_xcor: New parsing input:
+"COLOR \"2"
+parse_ycor: New parsing input:
+"COLOR \"2"
+parse_heading: New parsing input:
+"COLOR \"2"
+parse_color: New parsing input:
+"COLOR \"2"
+parse_expression: New parsing input:
+"\"2"
+parse_binary_ops: New parsing input:
+"\"2"
+parse_addition: New parsing input:
+"\"2"
+parse_subtraction: New parsing input:
+"\"2"
+parse_multiplication: New parsing input:
+"\"2"
+parse_division: New parsing input:
+"\"2"
+parse_modulo: New parsing input:
+"\"2"
+parse_equals: New parsing input:
+"\"2"
+parse_not_equals: New parsing input:
+"\"2"
+parse_greater_than: New parsing input:
+"\"2"
+parse_less_than: New parsing input:
+"\"2"
+parse_and: New parsing input:
+"\"2"
+parse_or: New parsing input:
+"\"2"
+parse_value: New parsing input:
+"\"2"
+parse_parentheses: New parsing input:
+"\"2"
+parse_queries: New parsing input:
+"\"2"
+parse_xcor: New parsing input:
+"\"2"
+parse_ycor: New parsing input:
+"\"2"
+parse_heading: New parsing input:
+"\"2"
+parse_color: New parsing input:
+"\"2"
+parse_integer: New parsing input:
+"\"2"
+parse_statement: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_penup: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_pendown: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_forward: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_back: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_left: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_right: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_turn: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setx: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_sety: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setheading: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_setpencolor: New parsing input:
+"SETPENCOLOR + COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+"+ COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+"+ COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+"+ COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_subtraction: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_multiplication: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_division: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_modulo: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_equals: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_not_equals: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_greater_than: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_less_than: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_and: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_or: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_value: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_parentheses: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_queries: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_xcor: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_ycor: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_heading: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_color: New parsing input:
+"COLOR \"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_expression: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_binary_ops: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_addition: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_subtraction: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_multiplication: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_division: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_modulo: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_equals: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_not_equals: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_greater_than: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_less_than: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_and: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_or: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_value: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_parentheses: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_queries: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_xcor: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_ycor: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_heading: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_color: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_integer: New parsing input:
+"\"2\n\n      Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+parse_comment: New parsing input:
+"Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+check_errors: New parsing input:
+"Box\n\n      IF LT \"8 COLOR [\n         SETPENCOLOR \"2\n      ]\n\n      ADDASSIGN \"BOXLINE \"2\n]\n"
+Full parsed AST:
+[
+    ProcedureDefinition {
+        name: Identifier(
+            "Box",
+            "",
+        ),
+        parameters: [],
+        body: [
+            Forward(
+                IntegerLiteral(
+                    10,
+                ),
+            ),
+            Left(
+                IntegerLiteral(
+                    10,
+                ),
+            ),
+            Back(
+                IntegerLiteral(
+                    10,
+                ),
+            ),
+        ],
+    },
+    PenDown,
+    Make(
+        Identifier(
+            "BOXLINE",
+            "\"",
+        ),
+        IntegerLiteral(
+            2,
+        ),
+    ),
+    ProcedureCall {
+        name: Identifier(
+            "WHILE",
+            "",
+        ),
+        arguments: [
+            LessThan(
+                VariableReference(
+                    "BOXLINE",
+                ),
+                IntegerLiteral(
+                    60,
+                ),
+            ),
+        ],
+    },
+    Turn(
+        IntegerLiteral(
+            20,
+        ),
+    ),
+    SetPenColor(
+        Addition(
+            QueryColor,
+            IntegerLiteral(
+                2,
+            ),
+        ),
+    ),
+]
+Initial state:
+ProgramState {
+    turtle: Turtle {
+        x: 250.0,
+        y: 250.0,
+        heading: 0.0,
+        pen_down: false,
+        pen_color: 15,
+        filename: "../output.svg",
+    },
+    variables: {},
+    procedures: {},
+}
+Statement evaluated:
+PROCEDURE_DEFINITION Box []
+Updated state:
+ProgramState {
+    turtle: Turtle {
+        x: 250.0,
+        y: 250.0,
+        heading: 0.0,
+        pen_down: false,
+        pen_color: 15,
+        filename: "../output.svg",
+    },
+    variables: {},
+    procedures: {
+        "Box": (
+            [],
+            [
+                Forward(
+                    IntegerLiteral(
+                        10,
+                    ),
+                ),
+                Left(
+                    IntegerLiteral(
+                        10,
+                    ),
+                ),
+                Back(
+                    IntegerLiteral(
+                        10,
+                    ),
+                ),
+            ],
+        ),
+    },
+}
+Statement evaluated:
+PENDOWN
+Updated state:
+ProgramState {
+    turtle: Turtle {
+        x: 250.0,
+        y: 250.0,
+        heading: 0.0,
+        pen_down: true,
+        pen_color: 15,
+        filename: "../output.svg",
+    },
+    variables: {},
+    procedures: {
+        "Box": (
+            [],
+            [
+                Forward(
+                    IntegerLiteral(
+                        10,
+                    ),
+                ),
+                Left(
+                    IntegerLiteral(
+                        10,
+                    ),
+                ),
+                Back(
+                    IntegerLiteral(
+                        10,
+                    ),
+                ),
+            ],
+        ),
+    },
+}
+Statement evaluated:
+MAKE BOXLINE 2
+Updated state:
+ProgramState {
+    turtle: Turtle {
+        x: 250.0,
+        y: 250.0,
+        heading: 0.0,
+        pen_down: true,
+        pen_color: 15,
+        filename: "../output.svg",
+    },
+    variables: {
+        "BOXLINE": Some(
+            ExpressionValue {
+                value_type: "integer",
+                integer_value: Some(
+                    2,
+                ),
+                string_value: None,
+            },
+        ),
+    },
+    procedures: {
+        "Box": (
+            [],
+            [
+                Forward(
+                    IntegerLiteral(
+                        10,
+                    ),
+                ),
+                Left(
+                    IntegerLiteral(
+                        10,
+                    ),
+                ),
+                Back(
+                    IntegerLiteral(
+                        10,
+                    ),
+                ),
+            ],
+        ),
+    },
+}
+error: procedure not found
+    could not find procedure with name WHILE
+hints:
+    > ensure the procedure name is correct

@@ -1,4 +1,3 @@
-
 TO L "Arg
    FORWARD :Arg
    LEFT :Arg
@@ -18,7 +17,7 @@ MAKE "BOXLINE "2
 WHILE LT :BOXLINE "60 [
       TURN "20
 
-      SETPENCOLOR + COLOR "2
+      SETPENCOLOR "5 
 
       Box :BOXLINE
 

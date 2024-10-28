@@ -1,5 +1,16 @@
 use colored::Colorize;
 
+use std::env;
+
+/**
+ * Custom debug printing
+ */
+pub fn debug(title: &str, message: &str) {
+    if env::var("DEBUG").is_ok() {
+        println!("{}{}\n{}", title.blue(), ":".white(), message.white());
+    }
+}
+
 /**
  * Custom error printing
  */

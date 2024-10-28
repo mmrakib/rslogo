@@ -12,10 +12,10 @@ use nom::{
 };
 
 /*
- * Local imports 
+ * Internal imports 
  */
 use crate::constants::{Block, Expression, Identifier, Statement};
-use crate::error::print_error;
+use crate::error::{print_error, debug};
 
 /*
  * Type alias for verbose parsing error for more detailed error messages
@@ -35,6 +35,8 @@ type ParserError<'a> = nom::error::VerboseError<&'a str>;
  */
 pub fn parse_program(content: String) -> Block {
     let input: &str = &content;
+
+    debug("Initial parsing input", &format!("{:?}", input));
 
     match parse_all(input) {
         Ok((_, ast)) => {
@@ -81,6 +83,8 @@ fn parse_all(input: &str) -> IResult<&str, Block, ParserError> {
  * Blocks
  */
 fn parse_block(input: &str) -> IResult<&str, Block, ParserError> {
+    debug("parse_block: New parsing input", &format!("{:?}", input));
+
     delimited(
         tag("["),
         many0(
@@ -100,6 +104,8 @@ fn parse_block(input: &str) -> IResult<&str, Block, ParserError> {
  * Arguments
  */
 fn parse_arguments(input: &str) -> IResult<&str, Vec<Expression>, ParserError> {
+    debug("parse_arguments: New parsing input", &format!("{:?}", input));
+
     many0(
         preceded(
             multispace1,
@@ -112,6 +118,8 @@ fn parse_arguments(input: &str) -> IResult<&str, Vec<Expression>, ParserError> {
  * Comments
  */
 fn parse_comment(input: &str) -> IResult<&str, (), ParserError> {
+    debug("parse_comment: New parsing input", &format!("{:?}", input));
+
     preceded(
         tag("//"),
         map(terminated(not_line_ending, line_ending), |_| ())
@@ -122,6 +130,8 @@ fn parse_comment(input: &str) -> IResult<&str, (), ParserError> {
  * Identifiers
  */
 fn parse_identifier(input: &str) -> IResult<&str, Identifier, ParserError> {
+    debug("parse_identifier: New parsing input", &format!("{:?}", input));
+
     let (input, prefix) = opt(alt( (tag("\""), tag(":") )))(input)?;
     let (input, name) = take_while1(|c: char| c.is_alphanumeric() || c == '_')(input)?;
 
@@ -143,6 +153,8 @@ fn parse_identifier(input: &str) -> IResult<&str, Identifier, ParserError> {
  * Terminal values
  */
 fn parse_integer(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_integer: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("\"")(input)?;
     let (input, sign) = opt(char('-'))(input)?;
     let (input, digits) = digit1(input)?;
@@ -167,6 +179,8 @@ fn parse_integer(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_string(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_string: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("\"")(input)?;
     let (input, content) = take_while1(|c: char| c.is_alphanumeric() || c == '_')(input)?;
 
@@ -174,6 +188,8 @@ fn parse_string(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_variable(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_variable: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag(":")(input)?;
     let (input, name) = take_while1(|c: char| c.is_alphanumeric() || c == '_')(input)?;
 
@@ -184,30 +200,40 @@ fn parse_variable(input: &str) -> IResult<&str, Expression, ParserError> {
  * Queries
  */
 fn parse_xcor(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_xcor: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("xcor")(input)?;
 
     Ok((input, Expression::QueryXCor))
 }
 
 fn parse_ycor(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_ycor: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("ycor")(input)?;
 
     Ok((input, Expression::QueryYCor))
 }
 
 fn parse_heading(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_heading: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("heading")(input)?;
 
     Ok((input, Expression::QueryHeading))
 }
 
 fn parse_color(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_color: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("color")(input)?;
 
     Ok((input, Expression::QueryColor))
 }
 
 fn parse_queries(input: &str) -> IResult<&str, Expression, ParserError> {
+    debug("parse_queries: New parsing input", &format!("{:?}", input));
+
     alt((
         parse_xcor,
         parse_ycor,
@@ -220,6 +246,8 @@ fn parse_queries(input: &str) -> IResult<&str, Expression, ParserError> {
  * Expressions
  */
 fn parse_value(input: &str) -> IResult<&str, Expression, ParserError> {
+    debug("parse_value: New parsing input", &format!("{:?}", input));
+
     alt((
         parse_parentheses,
         parse_queries,
@@ -230,6 +258,8 @@ fn parse_value(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_parentheses(input: &str) -> IResult<&str, Expression, ParserError> {
+    debug("parse_parentheses: New parsing input", &format!("{:?}", input));
+
     delimited(
         tag("("),
         parse_expression,
@@ -241,6 +271,8 @@ fn parse_parentheses(input: &str) -> IResult<&str, Expression, ParserError> {
  * Binary operations
  */
 fn parse_binary_ops(input: &str) -> IResult<&str, Expression, ParserError> {
+    debug("parse_binary_ops: New parsing input", &format!("{:?}", input));
+
     alt((
         parse_addition,
         parse_subtraction,
@@ -257,6 +289,8 @@ fn parse_binary_ops(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_addition(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_addition: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("+")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
@@ -265,6 +299,8 @@ fn parse_addition(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_subtraction(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_subtraction: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("-")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
@@ -273,6 +309,8 @@ fn parse_subtraction(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_multiplication(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_multiplication: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("*")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
@@ -281,6 +319,8 @@ fn parse_multiplication(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_division(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_division: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("/")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
@@ -289,6 +329,8 @@ fn parse_division(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_modulo(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_modulo: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("%")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
@@ -297,6 +339,8 @@ fn parse_modulo(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_equals(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_equals: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("EQ")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
@@ -305,6 +349,8 @@ fn parse_equals(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_not_equals(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_not_equals: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("NE")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
@@ -313,6 +359,8 @@ fn parse_not_equals(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_greater_than(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_greater_than: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("GT")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
@@ -321,6 +369,8 @@ fn parse_greater_than(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_less_than(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_less_than: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("LT")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
@@ -329,6 +379,8 @@ fn parse_less_than(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_and(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_and: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("AND")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
@@ -337,6 +389,8 @@ fn parse_and(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_or(input: &str) -> IResult<&str, Expression, ParserError> {
+    //debug("parse_or: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag("OR")(input)?;
     let (input,_) = multispace1(input)?;
     let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
@@ -345,6 +399,8 @@ fn parse_or(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_expression(input: &str) -> IResult<&str, Expression, ParserError> {
+    debug("parse_expression: New parsing input", &format!("{:?}", input));
+
     alt((
         parse_binary_ops,
         parse_value,
@@ -355,7 +411,9 @@ fn parse_expression(input: &str) -> IResult<&str, Expression, ParserError> {
  * Statements
  */
 fn parse_statement(input: &str) -> IResult<&str, Statement, ParserError> {
-    check_errors(input)?;
+    debug("parse_statement: New parsing input", &format!("{:?}", input));
+
+    let _ = check_errors(input);
 
     let pen_controls_group = alt((
         parse_penup,
@@ -407,12 +465,16 @@ fn parse_statement(input: &str) -> IResult<&str, Statement, ParserError> {
  * Pen control
  */
 fn parse_penup(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_penup: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("penup")(input)?;
 
     Ok((input, Statement::PenUp))
 }
 
 fn parse_pendown(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_pendown: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("pendown")(input)?;
 
     Ok((input, Statement::PenDown))
@@ -422,6 +484,8 @@ fn parse_pendown(input: &str) -> IResult<&str, Statement, ParserError> {
  * Movement control
  */
 fn parse_forward(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_forward: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("forward")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, pixels) = parse_expression(input)?;
@@ -430,6 +494,8 @@ fn parse_forward(input: &str) -> IResult<&str, Statement, ParserError> {
 }
 
 fn parse_back(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_back: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("back")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, pixels) = parse_expression(input)?;
@@ -438,6 +504,8 @@ fn parse_back(input: &str) -> IResult<&str, Statement, ParserError> {
 }
 
 fn parse_left(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_left: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("left")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, degrees) = parse_expression(input)?;
@@ -446,6 +514,8 @@ fn parse_left(input: &str) -> IResult<&str, Statement, ParserError> {
 }
 
 fn parse_right(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_right: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("right")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, degrees) = parse_expression(input)?;
@@ -454,6 +524,8 @@ fn parse_right(input: &str) -> IResult<&str, Statement, ParserError> {
 }
 
 fn parse_turn(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_turn: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("turn")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, degrees) = parse_expression(input)?;
@@ -465,6 +537,8 @@ fn parse_turn(input: &str) -> IResult<&str, Statement, ParserError> {
  * Setters
  */
 fn parse_setx(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_setx: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("setx")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, position) = parse_expression(input)?;
@@ -473,6 +547,8 @@ fn parse_setx(input: &str) -> IResult<&str, Statement, ParserError> {
 }
 
 fn parse_sety(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_sety: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("sety")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, position) = parse_expression(input)?;
@@ -481,6 +557,8 @@ fn parse_sety(input: &str) -> IResult<&str, Statement, ParserError> {
 }
 
 fn parse_setheading(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_setheading: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("setheading")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, degrees) = parse_expression(input)?;
@@ -489,6 +567,8 @@ fn parse_setheading(input: &str) -> IResult<&str, Statement, ParserError> {
 }
 
 fn parse_setpencolor(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_setpencolor: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("setpencolor")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, color) = parse_expression(input)?;
@@ -500,6 +580,8 @@ fn parse_setpencolor(input: &str) -> IResult<&str, Statement, ParserError> {
  * Variable assignment
  */
 fn parse_make(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_make: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("make")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, variable_name) = parse_identifier(input)?;
@@ -510,6 +592,8 @@ fn parse_make(input: &str) -> IResult<&str, Statement, ParserError> {
 }
 
 fn parse_addassign(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_addassign: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("addassign")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, variable_name) = parse_identifier(input)?;
@@ -523,6 +607,8 @@ fn parse_addassign(input: &str) -> IResult<&str, Statement, ParserError> {
  * Control structures
  */
 fn parse_if(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_if: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("if")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, condition) = parse_expression(input)?;
@@ -533,6 +619,8 @@ fn parse_if(input: &str) -> IResult<&str, Statement, ParserError> {
 }
 
 fn parse_while(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_while: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("while")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, condition) = parse_expression(input)?;
@@ -543,6 +631,8 @@ fn parse_while(input: &str) -> IResult<&str, Statement, ParserError> {
 }
 
 fn parse_repeat(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("parse_repeat: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("repeat")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, condition) = parse_expression(input)?;
@@ -556,17 +646,19 @@ fn parse_repeat(input: &str) -> IResult<&str, Statement, ParserError> {
  * Procedures
  */
 fn parse_procedure_definition(input: &str) -> IResult<&str, Statement, ParserError> {
+    debug("procedure_definition: New parsing input", &format!("{:?}", input));
+
     let (input, _) = tag_no_case("to")(input)?;
     let (input, _) = multispace1(input)?;
     let (input, identifier) = parse_identifier(input)?;
 
     let (input, parameters_string) = not_line_ending(input)?;
-    //println!("proc_def parameters_string: {:?}", parameters_string);
+
     let (_, parameters) = parse_arguments(parameters_string)?;
 
     let (input, _) = multispace0(input)?;
     let (input, body_string) = take_until("END\n")(input)?;
-    //println!("proc_def body_string: {:?}", body_string);
+
     let (_, filtered) = parse_all(body_string.trim())?;
 
     let (input, _) = multispace0(input)?;
@@ -583,11 +675,19 @@ fn parse_procedure_definition(input: &str) -> IResult<&str, Statement, ParserErr
 }
 
 fn parse_procedure_call(input: &str) -> IResult<&str, Statement, ParserError> {
-    // Parse the procedure name
+    debug("procedure_call: New parsing input", &format!("{:?}", input));
+
     let (input, identifier) = parse_identifier(input)?;
 
     let (input, parameters_string) = not_line_ending(input)?;
-    //println!("proc_call parameters_string: {:?}", parameters_string);
+
+    if parameters_string.trim().is_empty() {
+        return Ok((input, Statement::ProcedureCall {
+            name: identifier,
+            arguments: vec![],
+        }));
+    }
+
     let (_, parameters) = parse_arguments(parameters_string)?;
 
     Ok((
@@ -634,21 +734,29 @@ fn check_keywords(input: &str) -> IResult<&str, &str, ParserError> {
         tag_no_case("repeat"),
     ));
 
+    let procedures_group = alt((
+        tag_no_case("to"),
+        tag_no_case("end"),
+    ));
+
     let (input, keyword) = alt((
         pen_controls_group,
         turtle_movement_group,
         setters_group,
         variable_assignment_group,
         control_structures_group,
+        procedures_group,
     ))(input)?;
 
     Ok((input, keyword))
 }
 
 fn check_errors(input: &str) -> IResult<&str, (), ParserError> {
+    debug("check_errors: New parsing input", &format!("{:?}", input));
+
     let (_, (keyword, remaining)) = peek(tuple((
         check_keywords,
-        take_until("\n"),
+        not_line_ending,
     )))(input)?;
 
     let (_, arguments) = parse_arguments(remaining)?;
@@ -679,8 +787,7 @@ fn check_errors(input: &str) -> IResult<&str, (), ParserError> {
             }
         },
         "forward" | "back" | "left" | "right" | "turn" |
-        "setx" | "sety" | "setheading" | "setpencolor" |
-        "if" | "while" | "repeat" => {
+        "setx" | "sety" | "setheading" | "setpencolor" => {
             if args_len != 1 {
                 print_error_argument_count(1);
             }
@@ -699,6 +806,20 @@ fn check_errors(input: &str) -> IResult<&str, (), ParserError> {
                 print_error_argument_count(2);
             }
         },
+        "if" | "while" | "repeat" => {
+            if args_len != 1 {
+                print_error_argument_count(2);
+            }
+
+            for arg in arguments {
+                match arg {
+                    Expression::StringLiteral(_) => {
+                        print_error_argument_type( "non-string terminal value");
+                    },
+                    _ => (),
+                }
+            }
+        }
         _ => (),
     }
 

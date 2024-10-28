@@ -15,7 +15,7 @@ pub type Block = Vec<Statement>;
  * name: String - The name of the identifier
  * access_modifier: String - The access modifier (i.e. '"', ':' or ''), used to determine evaluation logic
  */
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Identifier(pub String, pub String);
 
 /**
@@ -32,7 +32,7 @@ pub struct Identifier(pub String, pub String);
  * 
  * Queries have no arguments as they evaluate to terminal values anyways
  */
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Expression {
     /*
      * Arithmetic operations
@@ -82,7 +82,7 @@ pub enum Expression {
  * 
  * Takes a variety of arguments, depending on the type of statement
  */
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Statement {
     /*
      * Pen control
