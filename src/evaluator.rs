@@ -1,3 +1,11 @@
+/* ========================================================================
+ * COMP6991 24T3 Asssignment 1
+ * Mohammad Mayaz Rakib (z5361151)
+ * 
+ * evaluator.rs - Evaluation of program logic and control flow
+ * ========================================================================
+ */
+
 use crate::constants::{Block, Expression, Statement};
 use crate::turtle::Turtle;
 use crate::error::{print_error, debug};
@@ -113,9 +121,9 @@ pub fn evaluate_program(turtle: Turtle, ast: Vec<Statement>) {
         procedures: HashMap::new(),
     };
 
-    debug("Initial state", &format!("{:#?}", state));
-
+    debug("initial program state", &format!("{:#?}", state));
     evaluate_ast(&ast, &mut state);
+    debug("final program state", &format!("{:#?}", state));
 
     state.turtle.generate_svg();
 }
@@ -125,21 +133,17 @@ pub fn evaluate_program(turtle: Turtle, ast: Vec<Statement>) {
  */
 fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
     for node in ast {
+        debug("intermediate program state", &format!("{:#?}", state));
+
         match node {
             /*
              * Pen control 
              */
             Statement::PenUp => {
                 state.turtle.penup();
-
-                debug("Statement evaluated", "PENUP");
-                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::PenDown => {
                 state.turtle.pendown();
-
-                debug("Statement evaluated", "PENDOWN");
-                debug("Updated state", &format!("{:#?}", state));
             },
 
             /*
@@ -148,37 +152,22 @@ fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
             Statement::Forward(expr) => {
                 let distance = evaluate_expression(&expr, state);
                 state.turtle.forward(distance.integer_value.unwrap() as f64);
-
-                debug("Statement evaluated", &format!("FORWARD {}", distance.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::Back(expr) => {
                 let distance = evaluate_expression(&expr, state);
                 state.turtle.back(distance.integer_value.unwrap() as f64);
-
-                debug("Statement evaluated", &format!("BACK {}", distance.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::Left(expr) => {
                 let angle = evaluate_expression(&expr, state);
                 state.turtle.left(angle.integer_value.unwrap() as f64);
-
-                debug("Statement evaluated", &format!("LEFT {}", angle.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::Right(expr) => {
                 let angle = evaluate_expression(&expr, state);
                 state.turtle.right(angle.integer_value.unwrap() as f64);
-
-                debug("Statement evaluated", &format!("RIGHT {}", angle.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::Turn(expr) => {
                 let angle = evaluate_expression(&expr, state);
                 state.turtle.right(angle.integer_value.unwrap() as f64);
-
-                debug("Statement evaluated", &format!("TURN {}", angle.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
             },
 
             /*
@@ -187,30 +176,18 @@ fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
             Statement::SetX(expr) => {
                 let x = evaluate_expression(&expr, state);
                 state.turtle.set_x(x.integer_value.unwrap() as f64);
-
-                debug("Statement evaluated", &format!("SETX {}", x.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::SetY(expr) => {
                 let y = evaluate_expression(&expr, state);
                 state.turtle.set_y(y.integer_value.unwrap() as f64);
-
-                debug("Statement evaluated", &format!("SETY {}", y.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::SetHeading(expr) => {
                 let heading = evaluate_expression(&expr, state);
                 state.turtle.set_heading(heading.integer_value.unwrap() as f64);
-
-                debug("Statement evaluated", &format!("SETHEADING {}", heading.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::SetPenColor(expr) => {
                 let color = evaluate_expression(&expr, state);
                 state.turtle.set_pen_color(color.integer_value.unwrap() as i32);
-
-                debug("Statement evaluated", &format!("SETPENCOLOR {}", color.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
             },
 
             /*
@@ -219,9 +196,6 @@ fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
             Statement::Make(identifier, expr) => {
                 let value = evaluate_expression(&expr, state);
                 state.stack.push( (identifier.0.clone(), Some(value.clone())) );
-
-                debug("Statement evaluated", &format!("MAKE {} {}", identifier.0, value.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::AddAssign(identifier, expr) => {
                 let value = evaluate_expression(&expr, state);
@@ -234,9 +208,6 @@ fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
                 };
 
                 state.set(identifier.0.clone(), Some(new_value));
-
-                debug("Statement evaluated", &format!("ADDASSIGN {} {}", identifier.0, value.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
             },
 
             /*
@@ -245,26 +216,17 @@ fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
             Statement::If(expr, block) => {
                 let condition = evaluate_expression(&expr, state);
 
-                debug("Statement evaluated", &format!("IF {}", condition.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
-
                 if condition.integer_value.unwrap() != 0 {
                     evaluate_ast(&block, state);
                 }                
             },
             Statement::While(expr, block) => {
-                debug("Statement evaluated", "WHILE");
-                debug("Updated state", &format!("{:#?}", state));
-
                 while evaluate_expression(&expr, state).integer_value.unwrap() != 0 {
                     evaluate_ast(&block, state);
                 }
             },
             Statement::Repeat(expr, block) => {
                 let times = evaluate_expression(&expr, state);
-
-                debug("Statement evaluated", &format!("REPEAT {}", times.integer_value.unwrap()));
-                debug("Updated state", &format!("{:#?}", state));
 
                 for _ in 0..times.integer_value.unwrap() {
                     evaluate_ast(&block, state);
@@ -294,9 +256,6 @@ fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
                 }
 
                 state.procedures.insert(name.0.clone(), (parameter_names.clone(), body.clone()));
-
-                debug("Statement evaluated", &format!("PROCEDURE_DEFINITION {} {:?}", name.0, parameter_names));
-                debug("Updated state", &format!("{:#?}", state));
             },
             Statement::ProcedureCall { name, arguments} => {
                 let procedure = match state.procedures.get(&name.0).cloned() {
@@ -312,8 +271,6 @@ fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
                     }
                 };
 
-                debug("Statement evaluated", &format!("PROCEDURE_CALL {} {:?}", name.0, arguments));
-
                 let (parameters, body) = procedure;
                 let parameters_len = parameters.len();
                 let mut parameters_pushed = 0;
@@ -326,8 +283,6 @@ fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
                         true,
                     );
                 }
-
-                debug("Updated state BEFORE adding procedure call variables", &format!("{:#?}", state));
 
                 for (i, arg) in arguments.iter().enumerate() {
                     let value = evaluate_expression(arg, state);
@@ -344,8 +299,6 @@ fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
                     state.push(parameters[i].clone(), Some(value.clone()));
                     parameters_pushed += 1;
                 }
-
-                debug("Updated state AFTER adding procedure call variables", &format!("{:#?}", state));
 
                 evaluate_ast(&body, state);
 

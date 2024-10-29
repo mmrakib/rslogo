@@ -1,18 +1,18 @@
-/* ======================================================================
+/* ========================================================================
  * COMP6991 24T3 Asssignment 1
  * Mohammad Mayaz Rakib (z5361151)
  * 
  * main.rs - Entry point of the program
- * ======================================================================
+ * ========================================================================
  */
 
-/* ======================================================================
+/* ========================================================================
  * USAGE:
  *      cargo run <input_path> <output_path> <width> <height>
  * 
  * To enable debug mode:
  *      DEBUG=1 cargo run <input_path> <output_path> <width> <height>
- * ======================================================================
+ * ========================================================================
  */
 
 /*
@@ -32,7 +32,6 @@ use turtle::Turtle;
 use parser::parse_program;
 use evaluator::evaluate_program;
 use utils::read_file;
-use error::debug;
 
 /*
  * Standard library imports
@@ -52,7 +51,6 @@ fn main() -> Result<(), String> {
     let turtle= Turtle::new(width, height, output_path.to_string());
 
     let ast = parse_program(content);
-    debug("Full parsed AST", &format!("{:#?}", ast));
 
     evaluate_program(turtle, ast);
 

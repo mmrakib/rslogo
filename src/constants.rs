@@ -1,3 +1,11 @@
+/* ========================================================================
+ * COMP6991 24T3 Asssignment 1
+ * Mohammad Mayaz Rakib (z5361151)
+ * 
+ * constants.rs - Constant definitions, primarily for AST structure
+ * ========================================================================
+ */
+
 /**
  * A block of statements in the Logo language
  * 

@@ -1,9 +1,31 @@
+/* ========================================================================
+ * COMP6991 24T3 Asssignment 1
+ * Mohammad Mayaz Rakib (z5361151)
+ * 
+ * turtle.rs - Relative cursor (aka "turtle") functionality
+ * ========================================================================
+ */
+
 use unsvg::{Image, COLORS, get_end_coordinates};
 
 use crate::error::print_error;
 
 use std::fmt;
 
+/**
+ * Represents the state of the relative cursor (aka "turtle") in the Logo language
+ * 
+ * This struct is used to keep track of position, angle, pen state and output file state of the relative cursor
+ * 
+ * Properties:
+ * x: f64 - The x-coordinate of the turtle
+ * y: f64 - The y-coordinate of the turtle
+ * heading: f64 - The angle of the turtle in degrees
+ * pen_down: bool - The state of the pen (true if down, false if up)
+ * pen_color: i32 - The color of the pen (0-15)
+ * image: unsvg::Image - The image object used to draw the turtle's path
+ * filename: String - The output filename for the SVG file
+ */
 pub struct Turtle {
     x: f64,
     y: f64,

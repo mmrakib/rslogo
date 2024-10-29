@@ -1,12 +1,18 @@
+/* ========================================================================
+ * COMP6991 24T3 Asssignment 1
+ * Mohammad Mayaz Rakib (z5361151)
+ * 
+ * error.rs - Error handling utility functions
+ * ========================================================================
+ */
+
 use colored::Colorize;
 
-use std::env;
-
 /**
- * Custom debug printing
+ * Custom macro for debug printing
  */
 pub fn debug(title: &str, message: &str) {
-    if env::var("DEBUG").is_ok() {
+    if std::env::var("DEBUG").is_ok() {
         println!("{}{}\n{}", title.blue(), ":".white(), message.white());
     }
 }
