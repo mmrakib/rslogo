@@ -1,14 +1,14 @@
 /* ========================================================================
  * COMP6991 24T3 Asssignment 1
  * Mohammad Mayaz Rakib (z5361151)
- * 
+ *
  * constants.rs - Constant definitions, primarily for AST structure
  * ========================================================================
  */
 
 /**
  * A block of statements in the Logo language
- * 
+ *
  * Represents a sequence of statements that are to be executed in order
  * Every Logo program is viewed as a nested array of statement blocks, executed in order with inner blocks taking precedence
  */
@@ -16,9 +16,9 @@ pub type Block = Vec<Statement>;
 
 /**
  * An identifier in the Logo language
- * 
+ *
  * Represents a name for referring to another code feature i.e. variables, procedures
- * 
+ *
  * The argument structure is as follows:
  * name: String - The name of the identifier
  * access_modifier: String - The access modifier (i.e. '"', ':' or ''), used to determine evaluation logic
@@ -28,16 +28,16 @@ pub struct Identifier(pub String, pub String);
 
 /**
  * An expression in the Logo language
- * 
+ *
  * Represents all types of operations/values that can be evaluated
- * 
+ *
  * The argument structure of a binary operation is as follows:
  * lhs: Box<Expression> - The left hand side of the operation
  * rhs: Box<Expression> - The right hand side of the operation
- * 
+ *
  * Terminals values have one argument, representing a Rust-intepretable version of the value itself
  * e.g. IntegerLiteral(5) is defined as 'IntegerLiteral' for the parser and 5 for the evaluator
- * 
+ *
  * Queries have no arguments as they evaluate to terminal values anyways
  */
 #[derive(Debug, PartialEq, Clone)]
@@ -83,11 +83,11 @@ pub enum Expression {
 
 /**
  * A statement in the Logo language
- * 
+ *
  * Represents a single command to be executed
  * Usually takes a whole line, and is preceded by a keyword
  * e.g. PENDOWN, FORWARD, IF, SETHEADING, etc.
- * 
+ *
  * Takes a variety of arguments, depending on the type of statement
  */
 #[derive(Debug, PartialEq, Clone)]
@@ -139,5 +139,5 @@ pub enum Statement {
     ProcedureCall {
         name: Identifier,
         arguments: Vec<Expression>,
-    }
+    },
 }

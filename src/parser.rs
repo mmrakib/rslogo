@@ -1,7 +1,7 @@
 /* ========================================================================
  * COMP6991 24T3 Asssignment 1
  * Mohammad Mayaz Rakib (z5361151)
- * 
+ *
  * parser.rs - Parser for interpreting syntax/semantics and generating AST
  * ========================================================================
  */
@@ -10,20 +10,20 @@
  * Parser combinator imports from 'nom' crate
  */
 use nom::{
-    branch::alt, 
+    branch::alt,
     bytes::complete::{tag, tag_no_case, take_until, take_while1},
-    character::complete::{digit1, char, multispace0, multispace1, line_ending, not_line_ending},
+    character::complete::{char, digit1, line_ending, multispace0, multispace1, not_line_ending},
     combinator::{map, opt, peek},
     multi::many0,
-    sequence::{tuple, delimited, preceded, terminated},
+    sequence::{delimited, preceded, terminated, tuple},
     IResult,
 };
 
 /*
- * Internal imports 
+ * Internal imports
  */
 use crate::constants::{Block, Expression, Identifier, Statement};
-use crate::error::{print_error, debug};
+use crate::error::{debug, print_error};
 
 /*
  * Type alias for verbose parsing error for more detailed error messages
@@ -32,12 +32,12 @@ type ParserError<'a> = nom::error::VerboseError<&'a str>;
 
 /**
  * Parse the contents of the program
- * 
+ *
  * Reads program from start to finish, generating an AST according to syntax rules
- * 
+ *
  * Arguments:
  * content: String - The entirety of the program code contained in a string
- * 
+ *
  * Returns:
  * ast: Block - An AST represented by a block of statements (potentially with nested blocks)
  */
@@ -46,41 +46,34 @@ pub fn parse_program(content: String) -> Block {
     debug("initial parser input", &format!("{:#?}", input));
 
     match parse_all(input) {
-        Ok((_, ast)) => {
-            ast
-        },
+        Ok((_, ast)) => ast,
         Err(error) => {
             print_error(
                 "syntax error",
                 &format!("{:?}", error),
-                &["ensure no typos in the program", 
-                        "ensure compliance to precise syntax rules"],
+                &[
+                    "ensure no typos in the program",
+                    "ensure compliance to precise syntax rules",
+                ],
                 true,
             ); // Exits anyway
             panic!();
-        }        
+        }
     }
 }
 
 /**
  * A helper function for parsing all code while filtering out comments
- * 
+ *
  * Combines all component parsers into a single parser
  */
 fn parse_all(input: &str) -> IResult<&str, Block, ParserError> {
-    many0(
-        preceded(
-            multispace0,
-            alt((
-                map(parse_comment, |_| None),
-                map(parse_statement, |statement| Some(statement)),
-            ))
-        )
-    )(input).map(|(remaining, statements)| {
-        let filtered = statements
-            .into_iter()
-            .filter_map(|s| s)
-            .collect();
+    many0(preceded(
+        multispace0,
+        alt((map(parse_comment, |_| None), map(parse_statement, Some))),
+    ))(input)
+    .map(|(remaining, statements)| {
+        let filtered = statements.into_iter().flatten().collect();
 
         (remaining, filtered)
     })
@@ -92,16 +85,8 @@ fn parse_all(input: &str) -> IResult<&str, Block, ParserError> {
 fn parse_block(input: &str) -> IResult<&str, Block, ParserError> {
     delimited(
         tag("["),
-        many0(
-            preceded(
-                multispace0,
-                parse_statement
-            )
-        ),
-        preceded(
-            multispace0,
-            tag("]")
-        ),
+        many0(preceded(multispace0, parse_statement)),
+        preceded(multispace0, tag("]")),
     )(input)
 }
 
@@ -109,12 +94,7 @@ fn parse_block(input: &str) -> IResult<&str, Block, ParserError> {
  * Arguments
  */
 fn parse_arguments(input: &str) -> IResult<&str, Vec<Expression>, ParserError> {
-    many0(
-        preceded(
-            multispace1,
-            parse_expression
-        )
-    )(input)
+    many0(preceded(multispace1, parse_expression))(input)
 }
 
 /*
@@ -123,7 +103,7 @@ fn parse_arguments(input: &str) -> IResult<&str, Vec<Expression>, ParserError> {
 fn parse_comment(input: &str) -> IResult<&str, (), ParserError> {
     preceded(
         tag("//"),
-        map(terminated(not_line_ending, line_ending), |_| ())
+        map(terminated(not_line_ending, line_ending), |_| ()),
     )(input)
 }
 
@@ -131,7 +111,7 @@ fn parse_comment(input: &str) -> IResult<&str, (), ParserError> {
  * Identifiers
  */
 fn parse_identifier(input: &str) -> IResult<&str, Identifier, ParserError> {
-    let (input, prefix) = opt(alt( (tag("\""), tag(":") )))(input)?;
+    let (input, prefix) = opt(alt((tag("\""), tag(":"))))(input)?;
     let (input, name) = take_while1(|c: char| c.is_alphanumeric() || c == '_')(input)?;
 
     let access_modifier = match prefix {
@@ -142,10 +122,13 @@ fn parse_identifier(input: &str) -> IResult<&str, Identifier, ParserError> {
                 "xcor" | "ycor" | "heading" | "color" => "Q",
                 _ => "",
             }
-        },
+        }
     };
 
-    Ok((input, Identifier(name.to_string(), access_modifier.to_string())))
+    Ok((
+        input,
+        Identifier(name.to_string(), access_modifier.to_string()),
+    ))
 }
 
 /*
@@ -168,10 +151,10 @@ fn parse_integer(input: &str) -> IResult<&str, Expression, ParserError> {
                 "invalid integer",
                 "integer value is too large or too small",
                 &["ensure the integer value is within the range of a 32-bit signed integer"],
-                true
+                true,
             ); // Exits anyway
             panic!();
-        },
+        }
     }
 }
 
@@ -217,12 +200,7 @@ fn parse_color(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_queries(input: &str) -> IResult<&str, Expression, ParserError> {
-    alt((
-        parse_xcor,
-        parse_ycor,
-        parse_heading,
-        parse_color,
-    ))(input)
+    alt((parse_xcor, parse_ycor, parse_heading, parse_color))(input)
 }
 
 /*
@@ -239,11 +217,7 @@ fn parse_value(input: &str) -> IResult<&str, Expression, ParserError> {
 }
 
 fn parse_parentheses(input: &str) -> IResult<&str, Expression, ParserError> {
-    delimited(
-        tag("("),
-        parse_expression,
-        tag(")")
-    )(input)
+    delimited(tag("("), parse_expression, tag(")"))(input)
 }
 
 /*
@@ -268,7 +242,8 @@ fn parse_binary_ops(input: &str) -> IResult<&str, Expression, ParserError> {
 fn parse_addition(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("+")(input)?;
     let (input, _) = multispace1(input)?;
-    let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
+    let (input, (left, _, right)) =
+        tuple((parse_expression, multispace1, parse_expression))(input)?;
 
     Ok((input, Expression::Addition(Box::new(left), Box::new(right))))
 }
@@ -276,23 +251,32 @@ fn parse_addition(input: &str) -> IResult<&str, Expression, ParserError> {
 fn parse_subtraction(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("-")(input)?;
     let (input, _) = multispace1(input)?;
-    let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
+    let (input, (left, _, right)) =
+        tuple((parse_expression, multispace1, parse_expression))(input)?;
 
-    Ok((input, Expression::Subtraction(Box::new(left), Box::new(right))))
+    Ok((
+        input,
+        Expression::Subtraction(Box::new(left), Box::new(right)),
+    ))
 }
 
 fn parse_multiplication(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("*")(input)?;
     let (input, _) = multispace1(input)?;
-    let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
+    let (input, (left, _, right)) =
+        tuple((parse_expression, multispace1, parse_expression))(input)?;
 
-    Ok((input, Expression::Multiplication(Box::new(left), Box::new(right))))
+    Ok((
+        input,
+        Expression::Multiplication(Box::new(left), Box::new(right)),
+    ))
 }
 
 fn parse_division(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("/")(input)?;
     let (input, _) = multispace1(input)?;
-    let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
+    let (input, (left, _, right)) =
+        tuple((parse_expression, multispace1, parse_expression))(input)?;
 
     Ok((input, Expression::Division(Box::new(left), Box::new(right))))
 }
@@ -300,7 +284,8 @@ fn parse_division(input: &str) -> IResult<&str, Expression, ParserError> {
 fn parse_modulo(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("%")(input)?;
     let (input, _) = multispace1(input)?;
-    let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
+    let (input, (left, _, right)) =
+        tuple((parse_expression, multispace1, parse_expression))(input)?;
 
     Ok((input, Expression::Modulo(Box::new(left), Box::new(right))))
 }
@@ -308,7 +293,8 @@ fn parse_modulo(input: &str) -> IResult<&str, Expression, ParserError> {
 fn parse_equals(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("EQ")(input)?;
     let (input, _) = multispace1(input)?;
-    let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
+    let (input, (left, _, right)) =
+        tuple((parse_expression, multispace1, parse_expression))(input)?;
 
     Ok((input, Expression::Equals(Box::new(left), Box::new(right))))
 }
@@ -316,23 +302,32 @@ fn parse_equals(input: &str) -> IResult<&str, Expression, ParserError> {
 fn parse_not_equals(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("NE")(input)?;
     let (input, _) = multispace1(input)?;
-    let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
+    let (input, (left, _, right)) =
+        tuple((parse_expression, multispace1, parse_expression))(input)?;
 
-    Ok((input, Expression::NotEquals(Box::new(left), Box::new(right))))
+    Ok((
+        input,
+        Expression::NotEquals(Box::new(left), Box::new(right)),
+    ))
 }
 
 fn parse_greater_than(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("GT")(input)?;
     let (input, _) = multispace1(input)?;
-    let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
+    let (input, (left, _, right)) =
+        tuple((parse_expression, multispace1, parse_expression))(input)?;
 
-    Ok((input, Expression::GreaterThan(Box::new(left), Box::new(right))))
+    Ok((
+        input,
+        Expression::GreaterThan(Box::new(left), Box::new(right)),
+    ))
 }
 
 fn parse_less_than(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("LT")(input)?;
     let (input, _) = multispace1(input)?;
-    let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
+    let (input, (left, _, right)) =
+        tuple((parse_expression, multispace1, parse_expression))(input)?;
 
     Ok((input, Expression::LessThan(Box::new(left), Box::new(right))))
 }
@@ -340,24 +335,23 @@ fn parse_less_than(input: &str) -> IResult<&str, Expression, ParserError> {
 fn parse_and(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("AND")(input)?;
     let (input, _) = multispace1(input)?;
-    let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
+    let (input, (left, _, right)) =
+        tuple((parse_expression, multispace1, parse_expression))(input)?;
 
     Ok((input, Expression::And(Box::new(left), Box::new(right))))
 }
 
 fn parse_or(input: &str) -> IResult<&str, Expression, ParserError> {
     let (input, _) = tag("OR")(input)?;
-    let (input,_) = multispace1(input)?;
-    let (input, (left, _, right)) = tuple((parse_expression, multispace1, parse_expression))(input)?;
+    let (input, _) = multispace1(input)?;
+    let (input, (left, _, right)) =
+        tuple((parse_expression, multispace1, parse_expression))(input)?;
 
     Ok((input, Expression::Or(Box::new(left), Box::new(right))))
 }
 
 fn parse_expression(input: &str) -> IResult<&str, Expression, ParserError> {
-    alt((
-        parse_binary_ops,
-        parse_value,
-    ))(input)
+    alt((parse_binary_ops, parse_value))(input)
 }
 
 /**
@@ -367,10 +361,7 @@ fn parse_statement(input: &str) -> IResult<&str, Statement, ParserError> {
     let _ = check_errors(input);
     debug("parsing new statement", &format!("{:#?}", input));
 
-    let pen_controls_group = alt((
-        parse_penup,
-        parse_pendown,
-    ));
+    let pen_controls_group = alt((parse_penup, parse_pendown));
 
     let turtle_movement_group = alt((
         parse_forward,
@@ -380,37 +371,25 @@ fn parse_statement(input: &str) -> IResult<&str, Statement, ParserError> {
         parse_turn,
     ));
 
-    let setters_group = alt((
-        parse_setx,
-        parse_sety,
-        parse_setheading,
-        parse_setpencolor,
-    ));
+    let setters_group = alt((parse_setx, parse_sety, parse_setheading, parse_setpencolor));
 
-    let variable_assignment_group = alt((
-        parse_make,
-        parse_addassign,
-    ));
+    let variable_assignment_group = alt((parse_make, parse_addassign));
 
-    let control_structures_group = alt((
-        parse_if,
-        parse_while,
-        parse_repeat,
-    ));
+    let control_structures_group = alt((parse_if, parse_while, parse_repeat));
 
-    let procedure_group = alt((
-        parse_procedure_definition,
-        parse_procedure_call,
-    ));
+    let procedure_group = alt((parse_procedure_definition, parse_procedure_call));
 
-    terminated(alt((
-        pen_controls_group,
-        turtle_movement_group,
-        setters_group,
-        variable_assignment_group,
-        control_structures_group,
-        procedure_group,
-    )), multispace0)(input)
+    terminated(
+        alt((
+            pen_controls_group,
+            turtle_movement_group,
+            setters_group,
+            variable_assignment_group,
+            control_structures_group,
+            procedure_group,
+        )),
+        multispace0,
+    )(input)
 }
 
 /*
@@ -436,7 +415,7 @@ fn parse_forward(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace1(input)?;
     let (input, pixels) = parse_expression(input)?;
 
-    Ok((input, Statement::Forward( Box::new(pixels) )))
+    Ok((input, Statement::Forward(Box::new(pixels))))
 }
 
 fn parse_back(input: &str) -> IResult<&str, Statement, ParserError> {
@@ -444,7 +423,7 @@ fn parse_back(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace1(input)?;
     let (input, pixels) = parse_expression(input)?;
 
-    Ok((input, Statement::Back( Box::new(pixels) )))
+    Ok((input, Statement::Back(Box::new(pixels))))
 }
 
 fn parse_left(input: &str) -> IResult<&str, Statement, ParserError> {
@@ -452,7 +431,7 @@ fn parse_left(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace1(input)?;
     let (input, degrees) = parse_expression(input)?;
 
-    Ok((input, Statement::Left( Box::new(degrees) )))
+    Ok((input, Statement::Left(Box::new(degrees))))
 }
 
 fn parse_right(input: &str) -> IResult<&str, Statement, ParserError> {
@@ -460,7 +439,7 @@ fn parse_right(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace1(input)?;
     let (input, degrees) = parse_expression(input)?;
 
-    Ok((input, Statement::Right( Box::new(degrees) )))
+    Ok((input, Statement::Right(Box::new(degrees))))
 }
 
 fn parse_turn(input: &str) -> IResult<&str, Statement, ParserError> {
@@ -468,7 +447,7 @@ fn parse_turn(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace1(input)?;
     let (input, degrees) = parse_expression(input)?;
 
-    Ok((input, Statement::Turn( Box::new(degrees) )))
+    Ok((input, Statement::Turn(Box::new(degrees))))
 }
 
 /*
@@ -479,7 +458,7 @@ fn parse_setx(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace1(input)?;
     let (input, position) = parse_expression(input)?;
 
-    Ok((input, Statement::SetX( Box::new(position) )))
+    Ok((input, Statement::SetX(Box::new(position))))
 }
 
 fn parse_sety(input: &str) -> IResult<&str, Statement, ParserError> {
@@ -487,7 +466,7 @@ fn parse_sety(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace1(input)?;
     let (input, position) = parse_expression(input)?;
 
-    Ok((input, Statement::SetY( Box::new(position) )))
+    Ok((input, Statement::SetY(Box::new(position))))
 }
 
 fn parse_setheading(input: &str) -> IResult<&str, Statement, ParserError> {
@@ -495,7 +474,7 @@ fn parse_setheading(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace1(input)?;
     let (input, degrees) = parse_expression(input)?;
 
-    Ok((input, Statement::SetHeading( Box::new(degrees) )))
+    Ok((input, Statement::SetHeading(Box::new(degrees))))
 }
 
 fn parse_setpencolor(input: &str) -> IResult<&str, Statement, ParserError> {
@@ -503,7 +482,7 @@ fn parse_setpencolor(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace1(input)?;
     let (input, color) = parse_expression(input)?;
 
-    Ok((input, Statement::SetPenColor( Box::new(color) )))
+    Ok((input, Statement::SetPenColor(Box::new(color))))
 }
 
 /*
@@ -516,7 +495,10 @@ fn parse_make(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace1(input)?;
     let (input, variable_val) = parse_expression(input)?;
 
-    Ok((input, Statement::Make(variable_name, Box::new(variable_val))))
+    Ok((
+        input,
+        Statement::Make(variable_name, Box::new(variable_val)),
+    ))
 }
 
 fn parse_addassign(input: &str) -> IResult<&str, Statement, ParserError> {
@@ -526,7 +508,10 @@ fn parse_addassign(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace1(input)?;
     let (input, variable_val) = parse_expression(input)?;
 
-    Ok((input, Statement::AddAssign(variable_name, Box::new(variable_val))))
+    Ok((
+        input,
+        Statement::AddAssign(variable_name, Box::new(variable_val)),
+    ))
 }
 
 /*
@@ -539,7 +524,7 @@ fn parse_if(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace0(input)?;
     let (input, block) = parse_block(input)?;
 
-    Ok((input, Statement::If( Box::new(condition), Box::new(block) )))
+    Ok((input, Statement::If(Box::new(condition), Box::new(block))))
 }
 
 fn parse_while(input: &str) -> IResult<&str, Statement, ParserError> {
@@ -549,7 +534,10 @@ fn parse_while(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace0(input)?;
     let (input, block) = parse_block(input)?;
 
-    Ok((input, Statement::While( Box::new(condition), Box::new(block) )))
+    Ok((
+        input,
+        Statement::While(Box::new(condition), Box::new(block)),
+    ))
 }
 
 fn parse_repeat(input: &str) -> IResult<&str, Statement, ParserError> {
@@ -559,7 +547,10 @@ fn parse_repeat(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, _) = multispace0(input)?;
     let (input, block) = parse_block(input)?;
 
-    Ok((input, Statement::Repeat( Box::new(condition), Box::new(block) )))
+    Ok((
+        input,
+        Statement::Repeat(Box::new(condition), Box::new(block)),
+    ))
 }
 
 /*
@@ -586,9 +577,9 @@ fn parse_procedure_definition(input: &str) -> IResult<&str, Statement, ParserErr
         input,
         Statement::ProcedureDefinition {
             name: identifier,
-            parameters: parameters,
+            parameters,
             body: filtered,
-        }
+        },
     ))
 }
 
@@ -598,10 +589,13 @@ fn parse_procedure_call(input: &str) -> IResult<&str, Statement, ParserError> {
     let (input, parameters_string) = not_line_ending(input)?;
 
     if parameters_string.trim().is_empty() {
-        return Ok((input, Statement::ProcedureCall {
-            name: identifier,
-            arguments: vec![],
-        }));
+        return Ok((
+            input,
+            Statement::ProcedureCall {
+                name: identifier,
+                arguments: vec![],
+            },
+        ));
     }
 
     let (_, parameters) = parse_arguments(parameters_string)?;
@@ -611,7 +605,7 @@ fn parse_procedure_call(input: &str) -> IResult<&str, Statement, ParserError> {
         Statement::ProcedureCall {
             name: identifier,
             arguments: parameters,
-        }
+        },
     ))
 }
 
@@ -619,10 +613,7 @@ fn parse_procedure_call(input: &str) -> IResult<&str, Statement, ParserError> {
  * Error handling for statements
  */
 fn check_keywords(input: &str) -> IResult<&str, &str, ParserError> {
-    let pen_controls_group = alt((
-        tag_no_case("penup"),
-        tag_no_case("pendown"),
-    ));
+    let pen_controls_group = alt((tag_no_case("penup"), tag_no_case("pendown")));
 
     let turtle_movement_group = alt((
         tag_no_case("forward"),
@@ -639,10 +630,7 @@ fn check_keywords(input: &str) -> IResult<&str, &str, ParserError> {
         tag_no_case("setpencolor"),
     ));
 
-    let variable_assignment_group = alt((
-        tag_no_case("make"),
-        tag_no_case("addassign"),
-    ));
+    let variable_assignment_group = alt((tag_no_case("make"), tag_no_case("addassign")));
 
     let control_structures_group = alt((
         tag_no_case("if"),
@@ -650,10 +638,7 @@ fn check_keywords(input: &str) -> IResult<&str, &str, ParserError> {
         tag_no_case("repeat"),
     ));
 
-    let procedures_group = alt((
-        tag_no_case("to"),
-        tag_no_case("end"),
-    ));
+    let procedures_group = alt((tag_no_case("to"), tag_no_case("end")));
 
     let (input, keyword) = alt((
         pen_controls_group,
@@ -668,29 +653,32 @@ fn check_keywords(input: &str) -> IResult<&str, &str, ParserError> {
 }
 
 fn check_errors(input: &str) -> IResult<&str, (), ParserError> {
-    let (_, (keyword, remaining)) = peek(tuple((
-        check_keywords,
-        not_line_ending,
-    )))(input)?;
+    let (_, (keyword, remaining)) = peek(tuple((check_keywords, not_line_ending)))(input)?;
 
     let (_, arguments) = parse_arguments(remaining)?;
     let args_len = arguments.len();
-    
-    let print_error_argument_count = |args_count: i32| -> () {
+
+    let print_error_argument_count = |args_count: i32| {
         print_error(
             "incorrect argument count",
-            &format!("{} arguments expected, {} arguments given", args_count, args_len),
+            &format!(
+                "{} arguments expected, {} arguments given",
+                args_count, args_len
+            ),
             &[&format!("check the syntax of the {} statement", keyword)],
-            true   
+            true,
         );
     };
 
-    let print_error_argument_type = |expected_type: &str| -> () {
+    let print_error_argument_type = |expected_type: &str| {
         print_error(
             "incorrect argument type",
             &format!("expected type {}", expected_type),
-            &[&format!("check the argument types of the {} statement", keyword)],
-            true
+            &[&format!(
+                "check the argument types of the {} statement",
+                keyword
+            )],
+            true,
         );
     };
 
@@ -699,38 +687,32 @@ fn check_errors(input: &str) -> IResult<&str, (), ParserError> {
             if args_len != 0 {
                 print_error_argument_count(0);
             }
-        },
-        "forward" | "back" | "left" | "right" | "turn" |
-        "setx" | "sety" | "setheading" | "setpencolor" => {
+        }
+        "forward" | "back" | "left" | "right" | "turn" | "setx" | "sety" | "setheading"
+        | "setpencolor" => {
             if args_len != 1 {
                 print_error_argument_count(1);
             }
 
             for arg in arguments {
-                match arg {
-                    Expression::StringLiteral(_) => {
-                        print_error_argument_type( "non-string terminal value");
-                    },
-                    _ => (),
+                if let Expression::StringLiteral(_) = arg {
+                    print_error_argument_type("non-string terminal value");
                 }
             }
-        },
+        }
         "make" | "addassign" => {
             if args_len != 2 {
                 print_error_argument_count(2);
             }
-        },
+        }
         "if" | "while" | "repeat" => {
             if args_len != 1 {
                 print_error_argument_count(2);
             }
 
             for arg in arguments {
-                match arg {
-                    Expression::StringLiteral(_) => {
-                        print_error_argument_type( "non-string terminal value");
-                    },
-                    _ => (),
+                if let Expression::StringLiteral(_) = arg {
+                    print_error_argument_type("non-string terminal value");
                 }
             }
         }
@@ -1101,7 +1083,10 @@ mod tests {
     #[test]
     fn test_parse_make() {
         let input = "MAKE \"foo \"10";
-        let expected = Statement::Make(Identifier("foo".to_string(), "\"".to_string()), Box::new(Expression::IntegerLiteral(10)));
+        let expected = Statement::Make(
+            Identifier("foo".to_string(), "\"".to_string()),
+            Box::new(Expression::IntegerLiteral(10)),
+        );
         let result = parse_make(input);
 
         assert_eq!(result, Ok(("", expected)));
@@ -1110,7 +1095,10 @@ mod tests {
     #[test]
     fn test_parse_addassign() {
         let input = "ADDASSIGN \"foo \"10";
-        let expected = Statement::AddAssign(Identifier("foo".to_string(), "\"".to_string()), Box::new(Expression::IntegerLiteral(10)));
+        let expected = Statement::AddAssign(
+            Identifier("foo".to_string(), "\"".to_string()),
+            Box::new(Expression::IntegerLiteral(10)),
+        );
         let result = parse_addassign(input);
 
         assert_eq!(result, Ok(("", expected)));
