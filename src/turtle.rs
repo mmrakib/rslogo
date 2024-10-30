@@ -56,7 +56,7 @@ impl Turtle {
             y: (height / 2) as f64,
             heading: 0.0,
             pen_down: false,
-            pen_color: 15,
+            pen_color: 7,
             image: Image::new(width, height),
             image_path,
         }

@@ -121,6 +121,8 @@ pub fn evaluate_program(turtle: Turtle, ast: Vec<Statement>) {
         procedures: HashMap::new(),
     };
 
+    debug("fully parsed ast", &format!("{:#?}", ast));
+
     debug("initial program state", &format!("{:#?}", state));
     evaluate_ast(&ast, &mut state);
     debug("final program state", &format!("{:#?}", state));
