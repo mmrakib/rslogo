@@ -169,7 +169,7 @@ fn evaluate_ast(ast: &Block, state: &mut ProgramState) {
             }
             Statement::Turn(expr) => {
                 let angle = evaluate_expression(expr, state);
-                state.turtle.right(angle.integer_value.unwrap() as f64);
+                state.turtle.turn(angle.integer_value.unwrap() as f64);
             }
 
             /*

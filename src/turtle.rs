@@ -86,15 +86,29 @@ impl Turtle {
         self.pen_color = color;
     }
 
-    fn move_turtle(&mut self, distance: f64) -> Result<(), String> {
+    fn move_turtle(&mut self, distance: f64) {
         if self.pen_down {
-            let (new_x, new_y) = self.image.draw_simple_line(
+            let (new_x, new_y) = match self.image.draw_simple_line(
                 self.x as i32,
                 self.y as i32,
                 self.heading as i32,
                 distance as i32,
                 COLORS[self.pen_color as usize],
-            )?;
+            ) {
+                Ok((x, y)) => (x, y),
+                Err(e) => {
+                    print_error(
+                        "failed to draw line",
+                        &e,
+                        &[
+                            "ensure the distance value is numeric",
+                            "ensure the distance value is positive",
+                        ],
+                        true,
+                    );
+                    panic!();
+                }
+            };
 
             self.x = new_x as f64;
             self.y = new_y as f64;
@@ -104,89 +118,35 @@ impl Turtle {
                 self.y as i32,
                 self.heading as i32,
                 distance as i32,
-            );
+            );    
 
             self.x = new_x as f64;
             self.y = new_y as f64;
         }
-
-        Ok(())
     }
 
     pub fn forward(&mut self, distance: f64) {
-        match self.move_turtle(distance) {
-            Ok(_) => (),
-            Err(e) => {
-                print_error(
-                    "failed to draw line",
-                    &e,
-                    &[
-                        "ensure the distance value is numeric",
-                        "ensure the distance value is positive",
-                    ],
-                    true,
-                );
-            }
-        }
+        self.move_turtle(distance);
     }
 
     pub fn back(&mut self, distance: f64) {
-        match self.move_turtle(-distance) {
-            Ok(_) => (),
-            Err(e) => {
-                print_error(
-                    "failed to draw line",
-                    &e,
-                    &[
-                        "ensure the distance value is numeric",
-                        "ensure the distance value is positive",
-                    ],
-                    true,
-                );
-            }
-        }
+        self.move_turtle(-distance);
     }
 
     pub fn left(&mut self, distance: f64) {
         self.heading -= 90.0;
-
-        match self.move_turtle(distance) {
-            Ok(_) => (),
-            Err(e) => {
-                print_error(
-                    "failed to draw line",
-                    &e,
-                    &[
-                        "ensure the distance value is numeric",
-                        "ensure the distance value is positive",
-                    ],
-                    true,
-                );
-            }
-        }
-
+        self.move_turtle(distance);
         self.heading += 90.0;
     }
 
     pub fn right(&mut self, distance: f64) {
         self.heading += 90.0;
-
-        match self.move_turtle(distance) {
-            Ok(_) => (),
-            Err(e) => {
-                print_error(
-                    "failed to draw line",
-                    &e,
-                    &[
-                        "ensure the distance value is numeric",
-                        "ensure the distance value is positive",
-                    ],
-                    true,
-                );
-            }
-        }
-
+        self.move_turtle(distance);
         self.heading -= 90.0;
+    }
+
+    pub fn turn(&mut self, degrees: f64) {
+        self.heading += degrees;
     }
 
     pub fn set_heading(&mut self, degrees: f64) {
