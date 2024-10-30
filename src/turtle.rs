@@ -147,16 +147,50 @@ impl Turtle {
         }
     }
 
-    pub fn left(&mut self, degrees: f64) {
-        self.heading = (self.heading - degrees).rem_euclid(360.0);
+    pub fn left(&mut self, distance: f64) {
+        self.heading -= 90.0;
+
+        match self.move_turtle(distance) {
+            Ok(_) => (),
+            Err(e) => {
+                print_error(
+                    "failed to draw line",
+                    &e,
+                    &[
+                        "ensure the distance value is numeric",
+                        "ensure the distance value is positive",
+                    ],
+                    true,
+                );
+            }
+        }
+
+        self.heading += 90.0;
     }
 
-    pub fn right(&mut self, degrees: f64) {
-        self.heading = (self.heading + degrees).rem_euclid(360.0);
+    pub fn right(&mut self, distance: f64) {
+        self.heading += 90.0;
+
+        match self.move_turtle(distance) {
+            Ok(_) => (),
+            Err(e) => {
+                print_error(
+                    "failed to draw line",
+                    &e,
+                    &[
+                        "ensure the distance value is numeric",
+                        "ensure the distance value is positive",
+                    ],
+                    true,
+                );
+            }
+        }
+
+        self.heading -= 90.0;
     }
 
     pub fn set_heading(&mut self, degrees: f64) {
-        self.heading = degrees.rem_euclid(360.0);
+        self.heading = degrees;
     }
 
     pub fn set_x(&mut self, x: f64) {
