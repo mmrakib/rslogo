@@ -154,7 +154,7 @@ impl Turtle {
     }
 
     pub fn set_x(&mut self, x: f64) {
-        if self.pen_down {
+        /* if self.pen_down {
             let distance = (x - self.x).abs();
             let heading = if x < self.x { 270 } else { 90 };
 
@@ -178,13 +178,13 @@ impl Turtle {
                     );
                 }
             }
-        }
+        } */
 
         self.x = x;
     }
 
     pub fn set_y(&mut self, y: f64) {
-        if self.pen_down {
+        /* if self.pen_down {
             let distance = (y - self.y).abs();
             let heading = if y < self.y { 0 } else { 180 };
 
@@ -208,7 +208,7 @@ impl Turtle {
                     );
                 }
             }
-        }
+        } */
 
         self.y = y;
     }
