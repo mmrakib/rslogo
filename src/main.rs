@@ -16,6 +16,11 @@
  */
 
 /*
+ * External crates
+ */
+use clap::Parser;
+
+/*
  * Internal modules
  */
 mod constants;
@@ -33,22 +38,28 @@ use parser::parse_program;
 use turtle::Turtle;
 use utils::read_file;
 
-/*
- * Standard library imports
+/**
+ * Program arguments structure
  */
-use std::env;
+#[derive(Parser)]
+struct Args {
+    file_path: std::path::PathBuf,
+    image_path: std::path::PathBuf,
+    width: u32,
+    height: u32,
+}
 
 fn main() -> Result<(), String> {
-    let args: Vec<String> = env::args().collect();
+    let args: Args = Args::parse();
 
-    let input_path: &str = &args[1];
-    let output_path: &str = &args[2];
-    let width: u32 = args[3].parse::<u32>().unwrap();
-    let height: u32 = args[4].parse::<u32>().unwrap();
+    let file_path = args.file_path;
+    let image_path = args.image_path;
+    let height = args.height;
+    let width = args.width;
 
-    let content = read_file(input_path);
+    let content = read_file(&file_path);
 
-    let turtle = Turtle::new(width, height, output_path.to_string());
+    let turtle = Turtle::new(width, height, image_path);
 
     let ast = parse_program(content);
 

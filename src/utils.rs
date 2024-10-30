@@ -21,7 +21,8 @@ use crate::error::print_error;
  * Returns:
  * String - The content of the input file in a string object
  */
-pub fn read_file(path: &str) -> String {
+pub fn read_file(path: &std::path::PathBuf) -> String {
+    // Attempt to open the file to check if it exists and is accessible
     match fs::File::open(path) {
         Ok(_) => (),
         Err(error) => {
@@ -37,6 +38,7 @@ pub fn read_file(path: &str) -> String {
         }
     }
 
+    // Attempt to read the file content as a string
     match fs::read_to_string(path) {
         Ok(content) => content,
         Err(error) => {
@@ -45,7 +47,7 @@ pub fn read_file(path: &str) -> String {
                 &format!("{:?}", error),
                 &["ensure the file is not empty"],
                 true,
-            ); // Exit anyways
+            );
             panic!();
         }
     }

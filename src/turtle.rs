@@ -24,7 +24,7 @@ use std::fmt;
  * pen_down: bool - The state of the pen (true if down, false if up)
  * pen_color: i32 - The color of the pen (0-15)
  * image: unsvg::Image - The image object used to draw the turtle's path
- * filename: String - The output filename for the SVG file
+ * image_path: String - The output filename for the SVG file
  */
 pub struct Turtle {
     x: f64,
@@ -33,7 +33,7 @@ pub struct Turtle {
     pen_down: bool,
     pen_color: i32,
     image: unsvg::Image,
-    filename: String,
+    image_path: std::path::PathBuf,
 }
 
 impl fmt::Debug for Turtle {
@@ -44,13 +44,13 @@ impl fmt::Debug for Turtle {
             .field("heading", &self.heading)
             .field("pen_down", &self.pen_down)
             .field("pen_color", &self.pen_color)
-            .field("filename", &self.filename)
+            .field("image_path", &self.image_path)
             .finish()
     }
 }
 
 impl Turtle {
-    pub fn new(width: u32, height: u32, filename: String) -> Self {
+    pub fn new(width: u32, height: u32, image_path: std::path::PathBuf) -> Self {
         Turtle {
             x: (width / 2) as f64,
             y: (height / 2) as f64,
@@ -58,7 +58,7 @@ impl Turtle {
             pen_down: false,
             pen_color: 15,
             image: Image::new(width, height),
-            filename,
+            image_path,
         }
     }
 
@@ -236,21 +236,43 @@ impl Turtle {
     }
 
     pub fn generate_svg(&self) {
-        match self
-            .image
-            .save_svg(self.filename.as_str())
-            .map_err(|e| e.to_string())
-        {
-            Ok(_) => {}
-            Err(error) => print_error(
-                "failed to generate SVG",
-                &format!("{:?}", error),
-                &[
-                    "ensure the output path is correct",
-                    "ensure the output path is writable",
-                ],
-                true,
-            ),
+        match self.image_path.extension().and_then(|s| s.to_str()) {
+            Some("svg") => {
+                let res = self.image.save_svg(&self.image_path);
+                if let Err(error) = res {
+                    print_error(
+                        "failed to generate SVG",
+                        &format!("{:?}", error),
+                        &[
+                            "ensure the output path is correct",
+                            "ensure the output path is writable",
+                        ],
+                        true,
+                    );
+                }
+            }
+            Some("png") => {
+                let res = self.image.save_png(&self.image_path);
+                if let Err(error) = res {
+                    print_error(
+                        "failed to generate PNG",
+                        &format!("{:?}", error),
+                        &[
+                            "ensure the output path is correct",
+                            "ensure the output path is writable",
+                        ],
+                        true,
+                    );
+                }
+            }
+            _ => {
+                print_error(
+                    "file extension not supported",
+                    "file extension must be either .svg or .png",
+                    &["ensure the output file extension is either .svg or .png"],
+                    true,
+                );
+            }
         }
     }
 }
