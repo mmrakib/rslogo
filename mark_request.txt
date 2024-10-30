@@ -1,0 +1,53 @@
+======================================================
+              COMP6991 24T3 Assignment 1
+        
+              Mohammad Mayaz Rakib (z5361151)
+======================================================
+
+1) I managed to use a parser combinator library to 
+implement the parser!
+
+I decided to use the 'nom' package for this task.
+
+I used all basic parsers that it implements and
+combined them together to build my larger and more
+complicated parser.
+
+Using this library makes it so that adding new features
+becomes as trivial as using the already existing parser
+functions. You only have to write a `parse_FEATURE()`
+function and add it to the `alt` parser that combines
+more specific parsers together, such as `parse_statement`
+or `parse_expression`.
+
+2) I made my errors beautiful!
+
+Beauty is, of course, in the eye of the beholder. And I
+didn't quite get the time to use a dedicated error
+printing package like 'ariadne'.
+
+However, I used the 'colored' package to allow for
+multiple different colors of my terminal text, and used
+a custom error printing utility function to format it
+in an understandable fashion.
+
+Every error I have also prints a set of hints to help
+the user diagnose the issue.
+
+3) Unit testing
+
+I have 80% unit testing coverage but only for the `parser`
+module. I didn't find it useful to do unit testing for
+say the `evaluator` or `turtle` modules.
+
+All my tests pass, and each test utilizes multiple test
+cases.
+
+
+
+Thank you for looking through my assignment project!
+
+You guys have been very helpful this term. :)
+
+
+
